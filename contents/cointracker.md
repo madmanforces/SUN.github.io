@@ -3,10 +3,10 @@ date: '2022-03-01'
 title: '코인 정보 앱 (SKY ROCKET)'
 categories: ['Portfolio']
 summary: '부모님도 손쉽게 볼수 있게 만든 코인 정보 앱 (MERN STACK)'
-thumbnail: './test.png'
+thumbnail: './coin.png'
 ---
 
-### 1. Help Google Bot to Find My Contents
+### 1. 소개
 
 구글에 SiteMap을 제출하여 사이트에 있는 파일로서 새 페이지나 변경된 페이지가 있을 때 이를 검색 엔진에 알려주도록 할 수 있다.
 

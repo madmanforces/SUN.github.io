@@ -3,7 +3,7 @@ module.exports = {
     title: `신입 FE개발자의 개발 블로그 & 포트폴리오`,
     description: `신입 개발자의 성장기!`,
     author: `Sun`,
-    siteUrl: 'https://SUN.github.io/',
+    siteUrl: 'https://madmanforces.github.io/',
   },
   plugins: [
     {
@@ -85,7 +85,7 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-canonical-urls',
       options: {
-        siteUrl: 'https://SUN.github.io/',
+        siteUrl: 'https://madmanforces.github.io/',
         stripQueryString: true,
       },
     },
