@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Sitemap: https://sun.github.io/sitemap/sitemap-index.xml
+Host: https://sun.github.io
