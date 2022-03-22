@@ -1,8 +1,8 @@
 ---
-date: '2022-01-11'
-title: 'gatsby로 블로그 & 포트폴리오 만들기 '
+date: '2022-02-27'
+title: 'ToDoList'
 categories: ['Portfolio']
-summary: 'Gatsby,GraphQL,'
+summary: 'Vanila.js'
 thumbnail: './test.png'
 ---
 

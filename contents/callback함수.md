@@ -1,12 +1,12 @@
 ---
-date: '2022-01-11'
-title: 'gatsby로 블로그 & 포트폴리오 만들기 '
-categories: ['Portfolio']
-summary: 'Gatsby,GraphQL,'
+date: '2022-01-12'
+title: 'callback 함수'
+categories: ['Blog']
+summary: 'Callback 함수에 대한 개념'
 thumbnail: './test.png'
 ---
 
-### 1. Help Google Bot to Find My Contents
+### 1. 소개
 
 구글에 SiteMap을 제출하여 사이트에 있는 파일로서 새 페이지나 변경된 페이지가 있을 때 이를 검색 엔진에 알려주도록 할 수 있다.
 

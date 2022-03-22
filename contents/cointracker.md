@@ -2,7 +2,7 @@
 date: '2022-03-01'
 title: '코인 정보 앱 (SKY ROCKET)'
 categories: ['Portfolio']
-summary: '부모님도 손쉽게 볼수 있게 만든 코인 정보 앱 (MERN STACK)'
+summary: 'MERN STACK(Mongo DB, Express, React, Node)'
 thumbnail: './coin.png'
 ---
 
