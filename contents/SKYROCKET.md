@@ -27,6 +27,15 @@ SKY ROCKET은 기본적으로 REACT를 사용하였고 NODE.JS를 사용하여 S
 2주간 가격 변동 추이와 하루간 가격 변동 추이 차트를 보여 줍니다.
 로그인 페이지에선 로그인을 할 수 있게 회원가입 페이지에선 회원가입을 할 수 있게 만들었습니다.
 
+<table align="center">
+   <tr>
+    <td><img alt="SKY ROCKET" src="./coin.png" width="40"/></td><td><img alt="SKY ROCKET" src="./coin_chart.png" width="40"/></td>
+    </tr>
+</table>
+<h3 align="center">
+  SKY ROCKET 랜딩 페이지
+</h3>
+
 ### 2. 느낀점
 
 1. 차트도 좋지만... 표에 초마다 변화하는 코인의 시세를 구현하고 싶었지만 오픈소스 API에는 일별로 나와있어서 구현하지 못한 것이 아쉬웠다.
