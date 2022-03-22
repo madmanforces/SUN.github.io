@@ -1,27 +1,31 @@
 ---
-date: '2022-02-27'
+date: '2022-02-23'
 title: 'ToDoList'
 categories: ['Portfolio']
 summary: 'Vanila.js'
-thumbnail: './test.png'
+thumbnail: './todo.png'
 ---
 
-### 1. Help Google Bot to Find My Contents
+### 1. 소개
 
-구글에 SiteMap을 제출하여 사이트에 있는 파일로서 새 페이지나 변경된 페이지가 있을 때 이를 검색 엔진에 알려주도록 할 수 있다.
+할 일을 입력하고 삭제 가능한 전형적인 ToDoList에 Api 를 활용해 위치정보를 불러오고 현재위치와 날씨를 알려주는 프로젝트 입니다.
 
-SiteMap은 사이트에 있는 페이지, 동영상 및 기타 파일과 각 관계에 관한 정보를 제공하는 파일로, 검색 엔진은 이를 읽고 사이트를 더 지능적으로 크롤링 할 수 있게 된다.
+### 2. 느낀점
 
-### 2. Use 'Robots.txt' File
+웹디자인 국비 과정을 끝낸 후 줄 곧 책으로만 자바스크립트를 공부 하다가 자바스크립트를 통한 첫 번째 프로젝트여서 뜻 깊고 뿌듯하다.
+비록 클론 코딩이지만 느낀점이 많은 프로젝트 였다.
+강의를 보고 따라치기에 급급해 하는 나를 보며 반성하게 되었고 이후 여러번 반복해서 만들게 되었다. 또 깃허브라는 곳에 커밋 하는 방법도
+알게되었다. 커밋은 하나의 작업이 완료 되었을때 수시로 해야 한다는것을 알게 되었고, 하다보니 자꾸 까먹어서 한번에 올리는 실수를 하고야 말았다.
+앞으론 주의 해야겠다. 깃허브 말고도 책으로 공부 했던 자바스크립트에 대한 기본기를 다질 수 있었던 프로젝트였다.
 
-Robots.txt 파일은 검색 엔진에 어떤 페이지를 크롤링해도 되는지 알리는 파일로, 서버의 루트 디렉토리에 있어야 한다.
-
-과도한 Robots.txt 파일은 더 많은 방문자를 유도할 수 있는 정상적인 검색 엔진 크롤러의 접근을 막을 가능성이 있기 때문에 적절하게 설정해야 한다.
+추가적으로 ToDoList를 만들다보니 모바일용으로 만드는게 더 좋지 않을까.. 라는 생각을 하게 되었다.
+보통 ToDoList같은 앱들은 모바일에서 많이 사용하기 때문에 나중에 프레임워크중 하나를 택해야 한다면 react를 택하고 native까지 배워보고
+싶은 욕심이 생겼다!
 
 ---
 
 ## Source
 
-- SEO 기본 가이드
+- 깃허브 링크
 
-  [<https://support.google.com/webmasters/answer/7451184?hl=ko&ref_topic=9460495>](https://support.google.com/webmasters/answer/7451184?hl=ko&ref_topic=9460495)
+  [<https://github.com/madmanforces/toDoList>](https://github.com/madmanforces/toDoList)

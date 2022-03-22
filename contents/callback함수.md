@@ -1,5 +1,5 @@
 ---
-date: '2022-01-12'
+date: '2022-03-01'
 title: 'callback 함수'
 categories: ['Blog']
 summary: 'Callback 함수에 대한 개념'
