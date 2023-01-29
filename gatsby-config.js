@@ -1,7 +1,7 @@
 module.exports = {
   siteMetadata: {
-    title: `신입 FE개발자의 개발 블로그 & 포트폴리오`,
-    description: `신입 개발자의 성장기!`,
+    title: `엑셀이 보기 불편해서 만든 싱가폴 여행기!`,
+    description: `이렇게 까지 만들어야했나!`,
     author: `Sun`,
     siteUrl: 'https://madmanforces.github.io/',
   },

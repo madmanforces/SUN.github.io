@@ -61,7 +61,7 @@ const Introduction: FunctionComponent<IntroductionProps> = function ({
 
         <div>
           <SubTitle>반갑습니다!</SubTitle>
-          <Title> 핑계 없는 하루를 살고 싶은 신입 FE개발자 황순재 입니다.</Title>
+          <Title>엑셀이 보기 불편해서 만든 싱가폴 여행 블로그! </Title>
         </div>
       </Wrapper>
     </Background>
