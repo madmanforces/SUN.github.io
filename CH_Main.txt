@@ -1,0 +1,106 @@
+Option Explicit
+
+
+Public Sub KAIS입력지생성()
+
+    Dim H_ProgVersion As String
+    H_ProgVersion = "Ver 1.0"
+
+    Dim H_WIMS_URL, H_WIMS_ID, H_WIMS_NAME As String
+    Dim H_WIMS_URL_CHK, H_WIMS_ID_CHK, H_WIMS_NAME_CHK As String
+    
+    Dim H_URLCODE, H_TMPLESHEET As String
+    Dim H_Result, H_ResultYN As String
+    
+    H_TMPLESHEET = "템플릿인증"
+    
+    '시트명 기존에 있는지 체크
+    Dim ws, newsheet As Worksheet
+    Dim ExistCheck As Boolean
+    
+    '시트 유무 확인
+    ExistCheck = False
+    For Each ws In Worksheets
+        If ws.Name = H_TMPLESHEET Then
+            ExistCheck = True
+            Exit For
+        End If
+    Next ws
+    
+    
+    'Sheet 존재시 : 정보 로딩 (접속사이트/사원번호/이름)
+    'Sheet 미존재시 : Sheet 생성후 접속 정보 표시
+    If ExistCheck Then   '
+    
+        Sheets(H_TMPLESHEET).Select
+        H_WIMS_URL = Sheets(H_TMPLESHEET).Range("B5").Value
+        H_WIMS_ID = "21607"
+        H_WIMS_NAME = "천병훈"
+        
+        If H_WIMS_URL = "" Or H_WIMS_ID = "" Or H_WIMS_NAME = "" Then
+            H_ResultYN = MsgBox("IF문 들어옴")
+            H_ResultYN = MsgBox("템플릿인증 SHEET에 정보가 입력되지 않았습니다." & _
+                            vbCr & "* 접속사이트 : http://wims.win-tek.co.kr" & _
+                            vbCr & "* 사원번호 : XXXXX" & _
+                            vbCr & "* 사원이름 : 홍길동" & _
+                            vbCr & vbCr & "템플릿인증 SHEET를 새로 생성할까요?", _
+                            vbYesNo + vbQuestion + vbDefaultButton2, "템플릿인증 SHEET 생성")
+                            
+            Select Case H_ResultYN
+                Case Is = vbYes
+                    TmpltDefaultFORM (H_TMPLESHEET)
+                Case Is = vbNo
+            End Select
+        Else
+            H_URLCODE = H_WIMS_URL & "/wep/kms/itm/WCP_ExcelAuthView_rd.jsp"
+            H_Result = connect_WEBServer(H_TMPLESHEET, H_URLCODE)
+            If H_Result = "TRUE" Then
+            
+                H_WIMS_URL_CHK = Sheets(H_TMPLESHEET).Range("A10").Value
+                H_WIMS_ID_CHK = "21607"
+                H_WIMS_NAME_CHK = "천병훈"
+                
+
+                If H_WIMS_ID_CHK = H_WIMS_ID And H_WIMS_NAME_CHK = H_WIMS_NAME Then
+                    Rows("10:10").Select
+                    Selection.Delete Shift:=xlUp
+                    frm_Kais_Code_Change.Show
+                Else
+                    Rows("10:1000").Select
+                    Selection.Delete Shift:=xlUp
+                    
+                    H_ResultYN = MsgBox("프로그램 사용 인증을 실패하였습니다." & _
+                            vbCr & vbCr & "* WIMS 인증 절차를 수행하세요.(WIMS접속)" & _
+                            vbCr & "* 템플릿 인증 정보를 확인하세요." & _
+                            vbCr & "  - 접속사이트 : http://wims.win-tek.co.kr" & _
+                            vbCr & "  - 사원번호 : XXXXX" & _
+                            vbCr & "  - 사원이름 : 홍길동" & _
+                            vbCr & vbCr & "템플릿인증 SHEET를 새로 생성할까요?", _
+                            vbYesNo + vbQuestion + vbDefaultButton2, "템플릿인증 SHEET 생성")
+                            
+                    Select Case H_ResultYN
+                        Case Is = vbYes
+                            TmpltDefaultFORM (H_TMPLESHEET)
+                        Case Is = vbNo
+                    End Select
+                End If
+            End If
+        End If
+    Else
+    
+        H_ResultYN = MsgBox("본 프로그램 실행을 위해서는 사용자 인증이 필요합니다." & _
+                            vbCr & "템플릿인증 SHEET 생성 후 해당정보를 입력하세요." & _
+                            vbCr & vbCr & "템플릿인증 SHEET를 생성할까요?", _
+                            vbYesNo + vbQuestion + vbDefaultButton2, "템플릿인증 SHEET 생성")
+                            
+        Select Case H_ResultYN
+            Case Is = vbYes
+                TmpltDefaultFORM (H_TMPLESHEET)
+            Case Is = vbNo
+                
+        End Select
+
+    End If
+    
+End Sub
+

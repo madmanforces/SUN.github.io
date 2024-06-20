@@ -1,0 +1,123 @@
+' ******************************************
+' Sheet 존재여부 체크
+' 입력값 : Sheet명
+' - Program Author : 이상화 (2008년 5월 30일)
+' - E-Mail : lsw000@hanmail.net
+' - 경고 : 본 프로그램에 대해서는 Program Author의 허가없이
+'   불법적으로 변경 및 사용을 금합니다.
+' ******************************************
+Sub ExistCheckSheet(wSheet)
+
+    '시트명 기존에 있는지 체크
+    Dim ws, newsheet As Worksheet
+    Dim ExistCheck As Boolean
+    
+    
+    '시트 유무 확인
+    ExistCheck = False
+    For Each ws In Worksheets
+        If ws.Name = wSheet Then
+            ExistCheck = True
+            Exit For
+        End If
+    Next ws
+    
+    
+    '시트 있으면 지우고 없으면 새로만들기
+    If ExistCheck Then   '
+'            Sheets(wSheet).UsedRange.ClearContents
+        Sheets(wSheet).Select
+        Cells.Select
+        Selection.ClearContents
+        Selection.Interior.ColorIndex = xlNone
+        
+    Else
+            Set newsheet = Worksheets.Add
+            newsheet.Name = wSheet
+    End If
+
+End Sub
+
+
+Sub Kais_GenMainusTran_Change(wSheet)
+
+    Sheets(wSheet).Select
+
+    Dim totalCell, totalData As Range
+    
+    ' 전체 Worksheets를 Loding
+    Set totalData = Worksheets(wSheet).Range("A1", Sheets(wSheet).Range("A65536").End(xlUp))
+    
+    ' 전체 ROW 갯수 COUNT
+    Dim totalTempCount As Integer
+    totalTempCount = totalData.Count
+    
+    Dim H_TempValue, H_TempValue2 As String
+    Dim uCount, tCount, rCount As Long
+    
+    For rCount = 65 To 90 Step 1
+        For uCount = 1 To totalTempCount Step 1
+            H_TempValue = Sheets(wSheet).Range(Chr(rCount) & CStr(uCount)).Value
+            For tCount = -100 To -1 Step 1
+                If H_TempValue = CStr(tCount) Then
+                    Sheets(wSheet).Range(Chr(rCount) & CStr(uCount)).Value = "'(" & Right(H_TempValue, Len(H_TempValue) - 1) & ")"
+                End If
+            Next
+        Next
+    Next
+        
+End Sub
+
+Sub Kais_GenCharTran_Change(wSheet)
+
+    Sheets(wSheet).Select
+
+    Cells.Replace What:="=-", Replacement:="'-", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+
+    Cells.Replace What:="“", Replacement:="""", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+        
+    Cells.Replace What:="”", Replacement:="""", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+        
+    Cells.Replace What:="‘", Replacement:="'", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+        
+    Cells.Replace What:="’", Replacement:="'", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+        
+    Cells.Replace What:="●", Replacement:="ㆍ", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+
+    Cells.Replace What:="～", Replacement:="~", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+
+    Cells.Replace What:="&", Replacement:="＆", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+
+    Cells.Replace What:="<", Replacement:="&lt;", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+        
+    Cells.Replace What:=">", Replacement:="&gt;", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+
+End Sub
+
+
+Sub Kais_GenRowPrev_Insert(wSheet, wRow)
+    Sheets(wSheet).Select
+    Rows(wRow).Select
+    Selection.Insert Shift:=xlDown
+
+End Sub
+
+
+Sub Kais_GenCol_Insert(wSheet, wCol, wValue)
+    Sheets(wSheet).Select
+    Range(wCol).Select
+    Sheets(wSheet).Range(wCol).Value = wValue
+End Sub
+
+
+

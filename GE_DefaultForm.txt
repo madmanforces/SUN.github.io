@@ -1,0 +1,62 @@
+Sub TmpltDefaultFORM(wSheet)
+
+    '시트명 기존에 있는지 체크
+    Dim ws, newsheet As Worksheet
+    Dim ExistCheck As Boolean
+    
+    
+    '시트 유무 확인
+    ExistCheck = False
+    For Each ws In Worksheets
+        If ws.Name = wSheet Then
+            ExistCheck = True
+            Exit For
+        End If
+    Next ws
+  
+
+    '시트 있으면 지우고 없으면 새로만들기
+    If ExistCheck Then   '
+'        Sheets(wSheet).UsedRange.ClearContents
+        
+        Sheets(wSheet).Select
+        Cells.Select
+        Selection.ClearContents
+        Selection.Interior.ColorIndex = xlNone
+    Else
+        Set newsheet = Worksheets.Add
+        newsheet.Name = wSheet
+    End If
+
+    Sheets(wSheet).Select
+    Range("A1").Select
+    Sheets(wSheet).Range("A1").Value = "** 필독 !!!"
+    Sheets(wSheet).Range("A2").Value = "** 본 프로그램 실행을 위해서는 WIMS 로그인이 되어 있어야만 가능합니다."
+    Sheets(wSheet).Range("A3").Value = "** 실행정보 입력(A4, B4, C4)"
+        
+    Range("A5").Select
+    Sheets(wSheet).Range("A5").Value = "접속사이트"
+    Sheets(wSheet).Range("B5").Value = "http://wims.win-tek.co.kr"
+    Range("A6").Select
+    Sheets(wSheet).Range("A6").Value = "사원번호"
+    Sheets(wSheet).Range("B6").Value = "XXXXX"
+    Range("A7").Select
+    Sheets(wSheet).Range("A7").Value = "사원이름"
+    Sheets(wSheet).Range("B7").Value = "홍길동"
+        
+    Range("A1:A3").Select
+    With Selection.Interior
+        .ColorIndex = 15
+        .Pattern = xlSolid
+        .PatternColorIndex = xlAutomatic
+    End With
+      
+    Range("A5:A7").Select
+    With Selection.Interior
+        .ColorIndex = 15
+        .Pattern = xlSolid
+        .PatternColorIndex = xlAutomatic
+    End With
+
+End Sub
+

@@ -1,0 +1,40 @@
+Option Explicit
+
+Private Declare PtrSafe Function CallNextHookEx Lib "user32" (ByVal hHook As Long, ByVal ncode As Long, ByVal wParam As Long, lParam As Any) As Long
+Private Declare PtrSafe Function GetModuleHandle Lib "kernel32" Alias "GetModuleHandleA" (ByVal lpModuleName As String) As Long
+Private Declare PtrSafe Function SetWindowsHookEx Lib "user32" Alias "SetWindowsHookExA" (ByVal idHook As Long, ByVal lpfn As Long, ByVal hmod As Long, ByVal dwThreadId As Long) As Long
+Private Declare PtrSafe Function UnhookWindowsHookEx Lib "user32" (ByVal hHook As Long) As Long
+Private Declare PtrSafe Function SendDlgItemMessage Lib "user32" Alias "SendDlgItemMessageA" (ByVal hDlg As Long, ByVal nIDDlgItem As Long, ByVal wMsg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
+Private Declare PtrSafe Function GetClassName Lib "user32" Alias "GetClassNameA" (ByVal hwnd As Long, ByVal lpClassName As String, ByVal nMaxCount As Long) As Long
+Private Declare PtrSafe Function GetCurrentThreadId Lib "kernel32" () As Long
+
+Private hHook As Long
+
+Public Function NewProc(ByVal iCode As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
+    Dim RetVal
+    Dim strClassName As String, lngBuffer As Long
+    If iCode < 0 Then
+        NewProc = CallNextHookEx(hHook, iCode, wParam, lParam)
+        Exit Function
+    End If
+    strClassName = String$(256, " ")
+    lngBuffer = 255
+    If iCode = 5 Then
+        RetVal = GetClassName(wParam, strClassName, lngBuffer)
+        If Left$(strClassName, RetVal) = "#32770" Then
+            SendDlgItemMessage wParam, &H1324, &HCC, Asc("*"), &H0
+        End If
+    End If
+    CallNextHookEx hHook, iCode, wParam, lParam
+End Function
+
+Public Function PWDInputBox(Prompt, Optional Title, Optional Default, Optional XPos, Optional YPos, Optional HelpFile, Optional Context) As String
+    Dim iModHwnd As Long, iThreadID As Long
+    iThreadID = GetCurrentThreadId
+    iModHwnd = GetModuleHandle(vbNullString)
+    hHook = SetWindowsHookEx(5, AddressOf NewProc, iModHwnd, iThreadID)
+    PWDInputBox = InputBox(Prompt, Title, Default, XPos, YPos, HelpFile, Context)
+    UnhookWindowsHookEx hHook
+End Function
+
+

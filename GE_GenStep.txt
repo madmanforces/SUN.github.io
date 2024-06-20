@@ -1,0 +1,210 @@
+Option Explicit
+
+Public dataSheet, resultSheet As String
+
+
+Public Function Kais_StepYES_Change()
+    
+    Dim totalCell, totalData As Range
+    
+    dataSheet = "일반자료"
+
+    Dim H_InitYN, H_ErrorYN, H_TempSecondValue As String
+    Dim H_ContentValue, H_RightValue, H_FirstValue, H_FirstCode, H_SecondValue, H_SecondCode As String
+    
+    Dim H_FullDataValue As String
+    
+    Dim H_ResultCount As Long
+    Dim H_ComResultValue As Long
+    
+    Dim uCount As Long
+ 
+    ' 전체 Worksheets를 Loding
+    Set totalData = Worksheets(dataSheet).Range("A1", Sheets(dataSheet).Range("A65536").End(xlUp))
+    
+    ' 전체 ROW 갯수 COUNT
+    Dim totalTempCount As Integer
+    totalTempCount = totalData.Count
+    
+    For uCount = 1 To totalTempCount Step 1
+    
+        H_FullDataValue = ""
+        H_ErrorYN = False
+        H_ResultCount = 0
+        H_ContentValue = " "
+        H_TempSecondValue = " "
+    
+        H_ComResultValue = 99999
+        
+        H_InitYN = Sheets(dataSheet).Range("A" + CStr(uCount)).Value
+
+
+        If H_InitYN = "[[일반]]" Or H_InitYN = "[[주]]" Or H_InitYN = "[[주의]]" Or H_InitYN = "[[경고]]" Then
+        
+            H_TempSecondValue = Sheets(dataSheet).Range("C" + CStr(uCount)).Value
+            H_FullDataValue = Sheets(dataSheet).Range("D" + CStr(uCount)).Value
+            
+            If H_TempSecondValue <> "[[START]]" Then
+                ' *******************************************
+                ' * 레벨값 설정 시작
+                ' *******************************************
+                Sheets(dataSheet).Select
+                Range("C" & uCount).Select
+         
+                H_ResultCount = InStr(1, H_FullDataValue, " ") - 1
+                
+                ' 개요 자리수 체크(2개~6개)
+                If (H_ResultCount >= 2) And (H_ResultCount <= 6) Then
+                
+                    ' 개요 값 정의
+                    H_ContentValue = Left(H_FullDataValue, H_ResultCount)
+                                        
+                    ' 마지막 코드값 정의
+                    H_RightValue = Right(H_ContentValue, 1)
+
+                    ' 첫번째 값 정의
+                    H_FirstValue = Left(H_ContentValue, 1)
+                    
+                    ' 첫번째 값 코드 정의(48~57 : 숫자임)
+                    H_FirstCode = Asc(H_FirstValue)
+                   
+                    ' 두번째 값 정의
+                    H_SecondValue = Mid(H_ContentValue, 2, 1)
+                    
+                    ' 두번째 값 코드 정의
+                    H_SecondCode = Asc(H_SecondValue)
+                    
+                    If H_RightValue = "." Then
+                        If (H_FirstCode >= 48) And (H_FirstCode <= 57) Then
+                            H_ComResultValue = 1
+                        Else
+                            H_ComResultValue = 2
+                        End If
+                    ElseIf H_RightValue = ")" Then
+                        If (H_FirstCode >= 48) And (H_FirstCode <= 57) Then
+                            H_ComResultValue = 3
+                        ElseIf H_FirstValue = "(" Then
+                            If (H_SecondCode >= 48) And (H_SecondCode <= 57) Then
+                                H_ComResultValue = 5
+                            Else
+                                H_ComResultValue = 6
+                            End If
+                        Else
+                            H_ComResultValue = 4
+                        End If
+                    End If
+                    
+                Else
+                    H_ComResultValue = 99999
+                End If
+            
+                Sheets(dataSheet).Range("C" & uCount).Value = ""
+                Sheets(dataSheet).Range("C" & CStr(uCount)).Value = CStr(H_ComResultValue)
+            End If
+        End If
+    Next uCount
+  
+    Kais_StepYES_Change = "TRUE"
+End Function
+
+Public Function Kais_StepNO_Change()
+    
+    Dim totalCell, totalData As Range
+    
+    dataSheet = "일반자료"
+
+    Dim H_InitYN, H_TempSecondValue As String
+    Dim H_LevelValue, H_PrevLevelValue, H_ResultLevelValue As Long
+    Dim uCount As Long
+ 
+    
+    ' 전체 Worksheets를 Loding
+    Set totalData = Worksheets(dataSheet).Range("A1", Sheets(dataSheet).Range("A65536").End(xlUp))
+    
+    ' 전체 ROW 갯수 COUNT
+    Dim totalTempCount As Integer
+    totalTempCount = totalData.Count
+    
+    H_LevelValue = 99999
+    H_ResultLevelValue = 0
+    H_PrevLevelValue = 0
+    
+    For uCount = 1 To totalTempCount Step 1
+
+        H_InitYN = Sheets(dataSheet).Range("A" + CStr(uCount)).Value
+        H_TempSecondValue = Sheets(dataSheet).Range("C" + CStr(uCount)).Value
+        
+        If H_InitYN = "[[일반]]" Then
+        
+            Sheets(dataSheet).Select
+            Range("C" & uCount).Select
+    
+            H_LevelValue = Sheets(dataSheet).Range("C" + CStr(uCount)).Value
+                
+            If H_LevelValue = 99999 Then
+                
+                If H_PrevLevelValue = 0 Then
+                    H_ResultLevelValue = 0
+                Else
+                    H_ResultLevelValue = CInt(H_PrevLevelValue) + 1
+                End If
+                    
+                Sheets(dataSheet).Range("C" & uCount).Value = H_ResultLevelValue & "*"
+            Else
+               H_PrevLevelValue = Sheets(dataSheet).Range("C" + CStr(uCount)).Value
+            End If
+        ElseIf H_InitYN = "[[주]]" Or H_InitYN = "[[주의]]" Or H_InitYN = "[[경고]]" Then
+        
+            If H_TempSecondValue <> "[[START]]" Then
+                Sheets(dataSheet).Select
+                Range("C" & uCount).Select
+    
+                Sheets(dataSheet).Range("C" & uCount).Value = "0*"
+            End If
+        End If
+    Next uCount
+  
+    Kais_StepNO_Change = "TRUE"
+End Function
+
+
+Public Function Kais_StepComp_Change()
+    
+    Dim totalCell, totalData As Range
+    
+    dataSheet = "일반자료"
+
+    Dim H_InitYN, H_TempSecondValue As String
+    Dim H_LevelValue As String
+    Dim uCount As Long
+ 
+    
+    ' 전체 Worksheets를 Loding
+    Set totalData = Worksheets(dataSheet).Range("A1", Sheets(dataSheet).Range("A65536").End(xlUp))
+    
+    ' 전체 ROW 갯수 COUNT
+    Dim totalTempCount As Integer
+    totalTempCount = totalData.Count
+    
+   
+    For uCount = 1 To totalTempCount Step 1
+
+        H_InitYN = Sheets(dataSheet).Range("A" + CStr(uCount)).Value
+        H_TempSecondValue = Sheets(dataSheet).Range("C" + CStr(uCount)).Value
+        
+        If H_InitYN = "[[일반]]" Or H_InitYN = "[[주]]" Or H_InitYN = "[[주의]]" Or H_InitYN = "[[경고]]" Then
+        
+            If H_TempSecondValue <> "[[START]]" Then
+                Sheets(dataSheet).Select
+                Range("C" & uCount).Select
+    
+                H_LevelValue = Sheets(dataSheet).Range("C" + CStr(uCount)).Value
+                Sheets(dataSheet).Range("C" & uCount).Value = "[[단계" & H_LevelValue & "]]"
+            End If
+       
+        End If
+    Next uCount
+  
+    Kais_StepComp_Change = "TRUE"
+End Function
+

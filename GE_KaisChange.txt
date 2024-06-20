@@ -1,0 +1,259 @@
+Option Explicit
+
+Public dataSheet, resultSheet As String
+
+
+Public Function Kais_Code_Change(TBR_PUM, TBR_JUNG, TBR_Han, TBR_Desc)
+    
+    
+    Dim totalCell, totalData As Range
+    Dim levelCell, levelData As Range
+  
+  
+    Dim H_GroupNumberYN, H_CodeYN, H_InitYN As String
+    Dim uCount, iIndexCount, H_Start, H_KeyNum, resultCount As Long
+ 
+    dataSheet = "수리부속"
+    resultSheet = "변환지"
+
+    
+    ' 조립체 셋팅
+    ' 동일시트명있으면 체크후 있으면 Clear
+    Call ExistCheckSheet(resultSheet)
+    
+
+    ' 전체 Worksheets를 Loding
+    Set totalData = Worksheets(dataSheet).Range("A1", Sheets(dataSheet).Range("A65536").End(xlUp))
+    
+    Dim totalTempCount As Integer
+    totalTempCount = totalData.Count
+    
+    
+    ' 변환지 Count
+    resultCount = 0
+    
+    iIndexCount = 0
+    H_GroupNumberYN = ""
+    H_CodeYN = ""
+    H_Start = 0
+    For uCount = 1 To totalTempCount Step 1
+
+        H_InitYN = Sheets(dataSheet).Range("A" + CStr(uCount)).Value
+        If H_InitYN = "" Then
+            resultCount = resultCount + 1
+            Sheets(dataSheet).Select
+            Sheets(dataSheet).Rows(CStr(uCount) + ":" + CStr(uCount)).Select
+            Selection.Copy
+            Sheets(resultSheet).Select
+            Range("A" + CStr(resultCount)).Select
+            ActiveSheet.Paste
+            H_Start = 0
+        Else
+            Sheets(dataSheet).Select
+            Range("A" & CStr(uCount)).Select
+            
+            ' 그룹값에 따라 G1 셋팅
+            H_GroupNumberYN = Sheets(dataSheet).Range(TBR_PUM + CStr(uCount)).Value
+
+            If CStr(H_GroupNumberYN) <> "" Then
+                resultCount = resultCount + 1
+                Sheets(dataSheet).Select
+                Sheets(dataSheet).Rows(CStr(uCount) + ":" + CStr(uCount)).Select
+                Selection.Copy
+                Sheets(resultSheet).Select
+                Range("A" + CStr(resultCount)).Select
+                ActiveSheet.Paste
+                
+                H_Start = 0
+            Else
+                
+                If CStr(H_Start) = "0" Then
+                   Sheets(resultSheet).Range(TBR_Han + CStr(resultCount)).Value = Sheets(dataSheet).Range(TBR_JUNG + CStr(uCount)).Value
+                   H_Start = H_Start + 1
+                ElseIf CStr(H_Start) = "1" Then
+                   Sheets(resultSheet).Range(TBR_Desc + CStr(resultCount)).Value = Sheets(dataSheet).Range(TBR_JUNG + CStr(uCount)).Value
+                   H_Start = H_Start + 1
+                Else
+                   Sheets(dataSheet).Range("A" + CStr(uCount)).Value = "ER"
+                End If
+            End If
+        End If
+    Next uCount
+
+    
+    ' 괄호 문자 삭제
+ '   Sheets(resultSheet).Select
+ '   Sheets(resultSheet).Columns(TBR_Han + ":" + TBR_Han).Select
+ '   Selection.Replace What:="(", Replacement:="", LookAt:=xlPart, _
+ '       SearchOrder:=xlByRows, MatchCase:=False, SearchFormat:=False, _
+ '       ReplaceFormat:=False
+ '   Selection.Replace What:=")", Replacement:="", LookAt:=xlPart, _
+ '       SearchOrder:=xlByRows, MatchCase:=False, SearchFormat:=False, _
+ '       ReplaceFormat:=False
+ '
+ '   Sheets(resultSheet).Columns(TBR_Desc + ":" + TBR_Desc).Select
+ '   Selection.Replace What:="(", Replacement:="", LookAt:=xlPart, _
+ '       SearchOrder:=xlByRows, MatchCase:=False, SearchFormat:=False, _
+ '       ReplaceFormat:=False
+ '   Selection.Replace What:=")", Replacement:="", LookAt:=xlPart, _
+ '       SearchOrder:=xlByRows, MatchCase:=False, SearchFormat:=False, _
+ '       ReplaceFormat:=False
+    
+    Kais_Code_Change = "TRUE"
+    
+End Function
+
+
+Public Function Kais_num_Change()
+    
+    
+    Dim totalData As Range
+  
+  
+    Dim H_PUMNumberYN, H_InitYN As String
+    Dim uCount, resultCount As Long
+ 
+    dataSheet = "수리부속"
+    
+
+    ' 전체 Worksheets를 Loding
+    Set totalData = Worksheets(dataSheet).Range("A1", Sheets(dataSheet).Range("A65536").End(xlUp))
+    
+    Dim totalTempCount As Integer
+    totalTempCount = totalData.Count
+    
+    
+    ' 변환지 Count
+    resultCount = 0
+    
+    H_PUMNumberYN = ""
+    
+    For uCount = 1 To totalTempCount Step 1
+
+        H_InitYN = Sheets(dataSheet).Range("A" + CStr(uCount)).Value
+        
+        If H_InitYN = "" Then
+            resultCount = 1
+        Else
+            Sheets(dataSheet).Select
+            Range("A" & CStr(uCount)).Select
+            
+            ' 그룹값에 따라 G1 셋팅
+            H_PUMNumberYN = Sheets(dataSheet).Range("C" + CStr(uCount)).Value
+
+            If CStr(H_PUMNumberYN) <> "G1" Then
+                If CStr(H_PUMNumberYN) = "" Then
+                   resultCount = resultCount + 1
+                Else
+                   resultCount = 1
+                End If
+                
+                Sheets(dataSheet).Select
+                Sheets(dataSheet).Rows(CStr(uCount) + ":" + CStr(uCount)).Select
+                
+                Sheets(dataSheet).Range("P" + CStr(uCount)).Value = CStr(resultCount)
+
+            Else
+                resultCount = 1
+            End If
+        End If
+    Next uCount
+
+    
+    Kais_num_Change = "TRUE"
+    
+End Function
+
+Public Function Kais_pic_Change()
+    
+    
+    Dim totalData As Range
+  
+  
+    Dim H_PUMNumberYN, H_InitYN, H_picNumber, H_pumNumber, H_prevPumNumber, H_resultNUMBER As String
+    Dim uCount, resultCount, codeNumber As Long
+ 
+    resultSheet = "변환지"
+    
+
+    ' 전체 Worksheets를 Loding
+    Set totalData = Worksheets(resultSheet).Range("A1", Sheets(resultSheet).Range("A65536").End(xlUp))
+    
+    Dim totalTempCount As Integer
+    totalTempCount = totalData.Count
+    
+    
+    ' 변환지 Count
+    resultCount = 0
+    
+    ' 변환코드 Count
+    codeNumber = 1
+    
+    ' 품목번호
+    H_pumNumber = "1"
+    H_prevPumNumber = "1"
+    
+    H_PUMNumberYN = ""
+    
+    For uCount = 1 To totalTempCount Step 1
+
+        H_InitYN = Sheets(resultSheet).Range("A" + CStr(uCount)).Value
+        
+        If H_InitYN = "" Then
+            resultCount = 1
+        Else
+            Sheets(resultSheet).Select
+            Range("A" & CStr(uCount)).Select
+            
+            ' 그룹값에 따라 G1 셋팅
+            H_PUMNumberYN = Sheets(resultSheet).Range("C" + CStr(uCount)).Value
+
+            If CStr(H_PUMNumberYN) = "G1" Then
+            
+                ' 그림번호 검색
+                H_picNumber = Sheets(resultSheet).Range("B" + CStr(uCount + 1)).Value
+                
+                ' 품목번호 검색
+                H_pumNumber = Sheets(resultSheet).Range("C" + CStr(uCount + 1)).Value
+                
+                
+                ' 그림번호 갯수 COUNT
+                If CStr(H_pumNumber) = "1" Then
+                   codeNumber = 1
+                Else
+                   codeNumber = codeNumber + 1
+                End If
+                
+                H_resultNUMBER = CStr(codeNumber) + "-" + CStr(H_picNumber)
+                
+            Else
+                H_pumNumber = Sheets(resultSheet).Range("C" + CStr(uCount)).Value
+                
+                ' 그림번호 갯수 COUNT
+                If CStr(H_pumNumber) <> "1" Then
+                    H_prevPumNumber = Sheets(resultSheet).Range("C" + CStr(uCount - 1)).Value
+                    
+                    If CStr(H_prevPumNumber) = "G1" Then
+                        H_prevPumNumber = Sheets(resultSheet).Range("C" + CStr(uCount - 2)).Value
+                    End If
+                    
+                    ' 그림번호 오류 체크
+                    If (CInt(H_pumNumber) - CInt(H_prevPumNumber)) = 1 Then
+    
+                    Else
+                       H_resultNUMBER = "ERROR"
+                    End If
+                 End If
+            End If
+            
+            Sheets(resultSheet).Select
+            Sheets(resultSheet).Rows(CStr(uCount) + ":" + CStr(uCount)).Select
+                
+            Sheets(resultSheet).Range("A" + CStr(uCount)).Value = CStr(H_resultNUMBER)
+        End If
+    Next uCount
+
+    
+    Kais_pic_Change = "TRUE"
+    
+End Function

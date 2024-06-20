@@ -1,0 +1,127 @@
+' ******************************************
+' Sheet 원문자 번호 변경
+' 입력값 : Sheet명
+' - Program Author : 이상화 (2014년 11월 18일)
+' - E-Mail : lsw000@hanmail.net
+' - 경고 : 본 프로그램에 대해서는 Program Author의 허가없이
+'   불법적으로 변경 및 사용을 금합니다.
+' ******************************************
+Option Explicit
+
+Public resultSheet As String
+
+' ******************************************
+' 지상용 원문자 변경 모듈
+' ******************************************
+Public Function Kais_ArmyCirCle_Change()
+    
+    resultSheet = "변환지"
+
+    Sheets(resultSheet).Select
+
+    Dim rCount As Long
+    Dim originValue, resultValue As String
+    
+    Cells.Replace What:="[1]", Replacement:="①", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+    Cells.Replace What:="[2]", Replacement:="②", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+    Cells.Replace What:="[3]", Replacement:="③", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+    Cells.Replace What:="[4]", Replacement:="④", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+    Cells.Replace What:="[5]", Replacement:="⑤", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+    Cells.Replace What:="[6]", Replacement:="⑥", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+    Cells.Replace What:="[7]", Replacement:="⑦", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+    Cells.Replace What:="[8]", Replacement:="⑧", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+    Cells.Replace What:="[9]", Replacement:="⑨", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+    Cells.Replace What:="[10]", Replacement:="⑩", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+    Cells.Replace What:="[11]", Replacement:="⑪", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+    Cells.Replace What:="[12]", Replacement:="⑫", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+    Cells.Replace What:="[13]", Replacement:="⑬", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+    Cells.Replace What:="[14]", Replacement:="⑭", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+    Cells.Replace What:="[15]", Replacement:="⑮", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+    
+    For rCount = 16 To 200 Step 1
+        originValue = "[" & rCount & "]"
+        resultValue = "</para><pack hcp=""no"" esd=""no"" label="""
+        resultValue = resultValue & rCount & """ type=""ellips"">"
+        resultValue = resultValue & rCount & "</pack><para hcp=""no"" esd=""no"" inline_display=""1"">"
+    
+        Cells.Replace What:=originValue, Replacement:=resultValue, LookAt:=xlPart, SearchOrder _
+            :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+
+    Next
+
+    Kais_ArmyCirCle_Change = "TRUE"
+
+End Function
+
+' ******************************************
+' 해상용 원문자 변경 모듈
+' ******************************************
+Public Function Kais_NavyCirCle_Change()
+    
+    resultSheet = "변환지"
+
+    Sheets(resultSheet).Select
+
+    Dim rCount As Long
+    Dim originValue, resultValue As String
+    
+    Cells.Replace What:="[1]", Replacement:="①", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+    Cells.Replace What:="[2]", Replacement:="②", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+    Cells.Replace What:="[3]", Replacement:="③", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+    Cells.Replace What:="[4]", Replacement:="④", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+    Cells.Replace What:="[5]", Replacement:="⑤", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+    Cells.Replace What:="[6]", Replacement:="⑥", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+    Cells.Replace What:="[7]", Replacement:="⑦", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+    Cells.Replace What:="[8]", Replacement:="⑧", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+    Cells.Replace What:="[9]", Replacement:="⑨", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+    Cells.Replace What:="[10]", Replacement:="⑩", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+    Cells.Replace What:="[11]", Replacement:="⑪", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+    Cells.Replace What:="[12]", Replacement:="⑫", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+    Cells.Replace What:="[13]", Replacement:="⑬", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+    Cells.Replace What:="[14]", Replacement:="⑭", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+    Cells.Replace What:="[15]", Replacement:="⑮", LookAt:=xlPart, SearchOrder _
+        :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+    
+    For rCount = 16 To 200 Step 1
+        originValue = "[" & rCount & "]"
+        resultValue = "<pack hcp=""no"" esd=""no"" label=""" & rCount & """ type=""ellips"">0</pack>"
+        
+   
+        Cells.Replace What:=originValue, Replacement:=resultValue, LookAt:=xlPart, SearchOrder _
+            :=xlByRows, MatchCase:=False, SearchFormat:=False, ReplaceFormat:=False
+
+    Next
+
+    Kais_NavyCirCle_Change = "TRUE"
+
+End Function
+

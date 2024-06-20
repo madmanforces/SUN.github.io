@@ -1,0 +1,2656 @@
+Option Explicit
+
+Public Worksheet, resultSheet As String
+
+
+
+Public Function KAIS_TotalTrans_Change(TBR_STARTNUM, TBR_LB0, TBR_LB1, TBR_LB2, TBR_LB3, TBR_LB4, TBR_LB5, TBR_LB6, TBR_LB0_, TBR_LB1_, TBR_LB2_, TBR_LB3_, TBR_LB4_, TBR_LB5_, TBR_LB6_)
+    
+    
+    ' ****************************************************************
+    ' 원본지 셋팅 시작
+    ' ****************************************************************
+    Worksheet = "일반자료"
+    Dim workCell, workData As Range
+    ' ****************************************************************
+    ' 원본지 셋팅 끝
+    ' ****************************************************************
+    
+    
+    ' ****************************************************************
+    ' 변환지 셋팅 시작
+    ' ****************************************************************
+    resultSheet = "변환지"
+    Dim resultCell, resultData As Range
+    ' ****************************************************************
+    ' 원본지 셋팅 끝
+    ' ****************************************************************
+  
+  
+    ' ****************************************************************
+    ' 공통변수 셋팅 시작
+    ' ****************************************************************
+    Dim H_ParaTagStartValue, H_ParaTagEndValue As String
+    H_ParaTagStartValue = "<para>"
+    H_ParaTagEndValue = "</para>"
+    Dim J_wAcStartTagValue, J_wAcEndTagValue, J_noteparaStartTagValue, J_noteparaEndTagValue As String
+    J_wAcStartTagValue = "<warningAndCautionPara>"
+    J_wAcEndTagValue = "</warningAndCautionPara>"
+    J_noteparaStartTagValue = "<notePara>"
+    J_noteparaEndTagValue = "</notePara>"
+    
+    
+    
+    ' ****************************************************************
+    ' 공통변수 셋팅 시작
+    ' ****************************************************************
+    
+    ' ****************************************************************
+    ' 일반자료 TAG 정의 시작
+    ' ****************************************************************
+    Dim H_CharStartTagValue, H_CharMiddleTagValue, H_CharEndTagValue, H_CharCom_Value, H_CharStepValue, H_CharStepResult, H_CharOriginValue As String
+    Dim H_NoteStartTagValue, H_NoteEndTagValue, H_CautionStartTagValue, H_CautionEndTagValue, H_WarningStartTagValue, H_WarningEndTagValue, J_CharCom_Value, S_CharCom_Value As String
+    
+    Dim H_CharLevelNumValue, H_ContLevelNumValue As String
+    Dim H_IntLevelNumValue, H_ContIntLevelNumValue As Long
+    
+    Dim H_tempnum, H_LeveLenValue As Long
+    Dim H_ComInitValue, H_ComStepValue As Long
+    Dim H_InitValue(10), H_StepValue(10) As Long
+    H_InitValue(0) = Empty
+    H_InitValue(1) = Empty
+    H_InitValue(2) = Empty
+    H_InitValue(3) = Empty
+    H_InitValue(4) = Empty
+    H_InitValue(5) = Empty
+    H_InitValue(6) = Empty
+    
+    H_StepValue(0) = Empty
+    H_StepValue(1) = Empty
+    H_StepValue(2) = Empty
+    H_StepValue(3) = Empty
+    H_StepValue(4) = Empty
+    H_StepValue(5) = Empty
+    H_StepValue(6) = Empty
+    
+
+    H_CharStartTagValue = "<levelledPara><title>"
+    H_CharEndTagValue = "</title></levelledPara>"
+    
+    H_NoteStartTagValue = "<note>"
+    H_NoteEndTagValue = "</note>"
+    H_CautionStartTagValue = "<caution>"
+    H_CautionEndTagValue = "</caution>"
+    H_WarningStartTagValue = "<warning>"
+    H_WarningEndTagValue = "</warning>"
+    ' ****************************************************************
+    ' 일반자료 TAG 정의 시작
+    ' ****************************************************************
+    
+    ' ****************************************************************
+    ' 테이블문자 TAG 정의 시작
+    ' ****************************************************************
+    Dim H_TableTagStartValue, H_TableTagEndValue As String
+    Dim H_TitleTagStartValue, H_TitleTagEndValue As String
+    Dim H_TgroupTagStartValue, H_TgroupTagEndValue As String
+    Dim H_ColspecStartValue, H_ColspecEndValue As String
+    Dim H_TbodyStartValue, H_TbodyEndValue As String
+    Dim H_RowTagStartValue, H_RowTagEndValue As String
+    Dim H_EntryTagStartValue, H_EntryTagEndValue As String
+    Dim H_Com_Value, H_OriginValue As String
+    Dim H_Com_StartValue, H_Com_EndValue As String
+    
+    
+    H_TableTagStartValue = "<table frame=""all"" tablenum=""1"" tocentry=""0"" scilevel=""0"">"
+    H_TableTagEndValue = "</table>"
+    H_TitleTagStartValue = "<title>"
+    H_TitleTagEndValue = "</title>"
+    H_TgroupTagStartValue = "<tgroup cols=""2"" align=""center"">"
+    H_TgroupTagEndValue = "</tgroup>"
+    H_ColspecStartValue = "<colspec colnum=""1"" colname=""col1"" colwidth=""326"">"
+    H_ColspecEndValue = "</colspec>"
+    H_TbodyStartValue = "<tbody>"
+    H_TbodyEndValue = "</tbody>"
+    
+    
+    H_RowTagStartValue = "<row>"
+    H_RowTagEndValue = "</row>"
+    H_EntryTagStartValue = "<entry colname=""col1"" alignv=""middle"" align=""left"" colnum=""1"">"
+    H_EntryTagEndValue = "</entry>"
+    ' ****************************************************************
+    ' 테이블문자 TAG 정의 종료
+    ' ****************************************************************
+    
+  
+    ' ****************************************************************
+    ' 조종장치 지시기 TAG 정의 시작
+    ' ****************************************************************
+    Dim H_JoCtrlindtabStartValue, H_JoCtrlindtabEndValue As String
+    Dim H_JoTitleStartValue, H_JoTitleEndValue As String
+    Dim H_JoCtrlindrowTagStartValue, H_JoCtrlindrowTagEndValue As String
+    Dim H_JoKeyTagStartValue, H_JoKeyTagEndValue As String
+    Dim H_JoParaTagStartValue, H_JoParaTagEndValue As String
+    Dim H_JoCtrlindTagStartValue, H_JoCtrlindTagEndValue As String
+    Dim H_JoFunctionTagStartValue, H_JoFunctionTagEndValue As String
+    Dim H_JoCom_Value, H_JoOriginValue As String
+    Dim H_JoCom_StartValue, H_JoCom_EndValue As String
+    Dim H_PumValue, H_JojungValue, H_FuncValue As String
+    
+    H_JoCtrlindtabStartValue = "<ctrlindtab>"
+    H_JoCtrlindtabEndValue = "</ctrlindtab>"
+    H_JoTitleStartValue = "<title>"
+    H_JoTitleEndValue = "</title>"
+    H_JoCtrlindrowTagStartValue = "<ctrlindrow>"
+    H_JoCtrlindrowTagEndValue = "</ctrlindrow>"
+    H_JoKeyTagStartValue = "<key>"
+    H_JoKeyTagEndValue = "</key>"
+    H_JoCtrlindTagStartValue = "<ctrlind>"
+    H_JoCtrlindTagEndValue = "</ctrlind>"
+    H_JoFunctionTagStartValue = "<function>"
+    H_JoFunctionTagEndValue = "</function>"
+    H_JoParaTagStartValue = "<para>"
+    H_JoParaTagEndValue = "</para>"
+    ' ****************************************************************
+    ' 조종장치 지시기 TAG 정의 종료
+    ' ****************************************************************
+  
+  
+    ' ****************************************************************
+    ' 참고문헌 TAG 정의 시작
+    ' ****************************************************************
+    Dim H_RefNameStartValue, H_RefNameEndValue As String
+    Dim H_RefPubidentStartValue, H_RefPubidentEndValue As String
+    Dim H_RefNameValue, H_RefPubidentValue As String
+    
+    H_RefNameStartValue = "<name>"
+    H_RefNameEndValue = "</name>"
+    H_RefPubidentStartValue = "<pubident>"
+    H_RefPubidentEndValue = "</pubident>"
+    ' ****************************************************************
+    ' 참고문헌 TAG 정의 종료
+    ' ****************************************************************
+  
+    ' ****************************************************************
+    ' 완제품의 별도포장품목/ 기본불출품목 / 추가인가목록 TAG 정의 시작
+    ' ****************************************************************
+    Dim H_CmpCoeitabStartValue, H_CmpCoeitabEndValue As String
+    Dim H_CmpCoeiEntryStartValue, H_CmpCoeiEntryEndValue As String
+    
+    Dim H_CmpBiitabStartValue, H_CmpBiitabEndValue As String
+    Dim H_CmpBiiEntryStartValue, H_CmpBiiEntryEndValue As String
+    
+    Dim H_CmpAaltabStartValue, H_CmpAaltabEndValue As String
+    Dim H_CmpAalEntryStartValue, H_CmpAalEntryEndValue As String
+    
+    Dim H_CmpIllnoStartValue, H_CmpIllnoEndValue As String
+    Dim H_CmpNsnStartValue, H_CmpNsnEndValue As String
+    Dim H_CmpDcpnoStartValue, H_CmpDcpnoEndValue As String
+    Dim H_CmpNameStartValue, H_CmpNameEndValue As String
+    Dim H_CmpDescStartValue, H_CmpDescEndValue As String
+    Dim H_CmpCagenoStartValue, H_CmpCagenoEndValue As String
+    Dim H_CmpPartnoStartValue, H_CmpPartnoEndValue As String
+    Dim H_CmpUocStartValue, H_CmpUocEndValue As String
+    Dim H_CmpUmStartValue, H_CmpUmEndValue As String
+    Dim H_CmpQtyStartValue, H_CmpQtyEndValue As String
+    Dim H_CmpParaStartValue, H_CmpParaEndValue As String
+    
+    Dim H_CmpResIllnoValue, H_CmpResNsnValue As String
+    Dim H_CmpResNameValue, H_CmpResCagenoValue, H_CmpResPartnoValue As String
+    Dim H_CmpResUmValue, H_CmpResQtyValue As String
+    
+    Dim H_CmpTmpValue As String
+    
+    H_CmpCoeitabStartValue = "<coeitab>"
+    H_CmpCoeitabEndValue = "</coeitab>"
+    H_CmpCoeiEntryStartValue = "<coei-entry>"
+    H_CmpCoeiEntryEndValue = "</coei-entry>"
+    
+    H_CmpBiitabStartValue = "<biitab>"
+    H_CmpBiitabEndValue = "</biitab>"
+    H_CmpBiiEntryStartValue = "<bii-entry>"
+    H_CmpBiiEntryEndValue = "</bii-entry>"
+    
+    H_CmpAaltabStartValue = "<aal>"
+    H_CmpAaltabEndValue = "</aal>"
+    H_CmpAalEntryStartValue = "<aal-entry>"
+    H_CmpAalEntryEndValue = "</aal-entry>"
+    
+    H_CmpIllnoStartValue = "<illno>"
+    H_CmpIllnoEndValue = "</illno>"
+    H_CmpNsnStartValue = "<nsn>"
+    H_CmpNsnEndValue = "</nsn>"
+    
+    H_CmpDcpnoStartValue = "<dcpno>"
+    H_CmpDcpnoEndValue = "</dcpno>"
+    H_CmpNameStartValue = "<name>"
+    H_CmpNameEndValue = "</name>"
+    H_CmpDescStartValue = "<desc>"
+    H_CmpDescEndValue = "</desc>"
+    H_CmpCagenoStartValue = "<cageno>"
+    H_CmpCagenoEndValue = "</cageno>"
+    H_CmpPartnoStartValue = "<partno>"
+    H_CmpPartnoEndValue = "</partno>"
+    H_CmpUocStartValue = "<uoc>"
+    H_CmpUocEndValue = "</uoc>"
+    
+    H_CmpUmStartValue = "<um>"
+    H_CmpUmEndValue = "</um>"
+    H_CmpQtyStartValue = "<qty>"
+    H_CmpQtyEndValue = "</qty>"
+    
+    H_CmpParaStartValue = "<para hcp=""no"" esd=""no"">"
+    H_CmpParaEndValue = "</para>"
+    
+    ' ****************************************************************
+    ' 완제품의 별도포장품목/ 기본불출품목 / 추가인가목록 TAG 정의 종료
+    ' ****************************************************************
+
+    ' ****************************************************************
+    ' 소모성 보급품 및 물자목록 TAG 정의 시작
+    ' ****************************************************************
+    Dim H_ExplistStartValue, H_ExplistEndValue As String
+    Dim H_ExpdurEntryStartValue, H_ExpdurEntryEndValue As String
+    Dim H_ExpItemnoStartValue, H_ExpItemnoEndValue As String
+    Dim H_ExpLvlStartValue, H_ExpLvlEndValue As String
+    Dim H_ExpNsnStartValue, H_ExpNsnEndValue As String
+    Dim H_ExpNameStartValue, H_ExpNameEndValue As String
+    Dim H_ExpDescStartValue, H_ExpDescEndValue As String
+    Dim H_ExpCagenoStartValue, H_ExpCagenoEndValue As String
+    Dim H_ExpPartnoStartValue, H_ExpPartnoEndValue As String
+    Dim H_ExpUmStartValue, H_ExpUmEndValue As String
+    Dim H_ExpParaStartValue, H_ExpParaEndValue As String
+    
+    Dim H_ExpResItemnoValue, H_ExpResLvlValue, H_ExpResNsnValue As String
+    Dim H_ExpResNameValue, H_ExpResDescValue, H_ExpResCagenoValue As String
+    Dim H_ExpResPartnoValue, H_ExpResUmValue As String
+    
+    Dim H_ExpTmpValue As String
+
+    H_ExplistStartValue = "<explist>"
+    H_ExplistEndValue = "</explist>"
+    H_ExpdurEntryStartValue = "<expdur-entry>"
+    H_ExpdurEntryEndValue = "</expdur-entry>"
+    
+    H_ExpItemnoStartValue = "<itemno>"
+    H_ExpItemnoEndValue = "</itemno>"
+    H_ExpLvlStartValue = "<lvl>"
+    H_ExpLvlEndValue = "</lvl>"
+    H_ExpNsnStartValue = "<nsn>"
+    H_ExpNsnEndValue = "</nsn>"
+    H_ExpNameStartValue = "<name>"
+    H_ExpNameEndValue = "</name>"
+    H_ExpDescStartValue = "<desc>"
+    H_ExpDescEndValue = "</desc>"
+    H_ExpCagenoStartValue = "<cageno>"
+    H_ExpCagenoEndValue = "</cageno>"
+    H_ExpPartnoStartValue = "<partno>"
+    H_ExpPartnoEndValue = "</partno>"
+    H_ExpUmStartValue = "<um>"
+    H_ExpUmEndValue = "</um>"
+    
+    H_ExpParaStartValue = "<para>"
+    H_ExpParaEndValue = "</para>"
+
+    ' ****************************************************************
+    ' 소모성 보급품 및 물자목록 TAG 정의 종료
+    ' ****************************************************************
+
+    ' ****************************************************************
+    ' 정비용 장비 및 공구 일람표 TAG 정의 시작
+    ' ****************************************************************
+    Dim H_TerTerefcodeStartValue, H_TerTerefcodeEndValue As String
+    Dim H_TerMaintenanceStartValue, H_TerMaintenanceEndValue As String
+    Dim H_TerNameStartValue, H_TerNameEndValue As String
+    Dim H_TerNsnStartValue, H_TerNsnEndValue As String
+    Dim H_TerToolnoStartValue, H_TerToolnoEndValue As String
+    Dim H_TerPicnumStartValue, H_TerPicnumEndValue As String
+    Dim H_TerItemnoStartValue, H_TerItemnoEndValue As String
+    Dim H_TerParaStartValue, H_TerParaEndValue As String
+    
+    Dim H_TerResTerfcodeValue, H_TerResMaintenanceValue, H_TerResNameValue As String
+    Dim H_TerResNsnValue, H_TerResToolnoValue, H_TerResPicnumValue As String
+    Dim H_TerResItemnoValue As String
+    
+    Dim H_TerTmpValue As String
+
+    H_TerTerefcodeStartValue = "<terefcode>"
+    H_TerTerefcodeEndValue = "</terefcode>"
+    H_TerMaintenanceStartValue = "<maintenance>"
+    H_TerMaintenanceEndValue = "</maintenance>"
+    H_TerNameStartValue = "<name>"
+    H_TerNameEndValue = "</name>"
+    H_TerNsnStartValue = "<nsn>"
+    H_TerNsnEndValue = "</nsn>"
+    H_TerToolnoStartValue = "<toolno>"
+    H_TerToolnoEndValue = "</toolno>"
+    H_TerPicnumStartValue = "<picnum>"
+    H_TerPicnumEndValue = "</picnum>"
+    H_TerItemnoStartValue = "<itemno>"
+    H_TerItemnoEndValue = "</itemno>"
+    
+    H_TerParaStartValue = "<para>"
+    H_TerParaEndValue = "</para>"
+
+    ' ****************************************************************
+    ' 정비용 장비 및 공구 일람표 TAG 정의 종료
+    ' ****************************************************************
+
+    ' ****************************************************************
+    ' 정비할당표 비고 TAG 정의 시작
+    ' ****************************************************************
+    Dim H_RemRemarkcodeStartValue, H_RemRemarkcodeEndValue As String
+    Dim H_RemRemarksStartValue, H_RemRemarksEndValue As String
+    Dim H_RemParaStartValue, H_RemParaEndValue As String
+    
+    Dim H_RemResRemarkcodeValue, H_RemResRemarksValue As String
+    
+    Dim H_RemTmpValue As String
+
+    H_RemRemarkcodeStartValue = "<remarkcode>"
+    H_RemRemarkcodeEndValue = "</remarkcode>"
+    H_RemRemarksStartValue = "<remarks>"
+    H_RemRemarksEndValue = "</remarks>"
+ 
+    H_RemParaStartValue = "<para>"
+    H_RemParaEndValue = "</para>"
+
+    ' ****************************************************************
+    ' 정비할당표 비고 TAG 정의 종료
+    ' ****************************************************************
+
+    ' ****************************************************************
+    ' 정비할당표 TAG 정의 시작
+    ' ****************************************************************
+    Dim H_MacGroupnoStartValue, H_MacGroupnoEndValue As String
+    Dim H_MacCompassemStartValue, H_MacCompassemEndValue As String
+    Dim H_MacNameStartValue, H_MacNameEndValue As String
+    Dim H_MacTypedesStartValue, H_MacTypedesEndValue As String
+    Dim H_MacQualifyStartValue, H_MacQualifyEndValue As String
+    
+    Dim H_MacMaintfuncStartValue, H_MacMaintfuncEndValue As String
+    Dim H_MacMaintclassStartValue, H_MacMaintclassEndValue As String
+    Dim H_MacUnitStartValue, H_MacUnitEndValue As String
+    Dim H_MacCrewStartValue, H_MacCrewEndValue As String
+    Dim H_MacOrStartValue, H_MacOrEndValue As String
+    Dim H_MacDirectStartValue, H_MacDirectEndValue As String
+    Dim H_MacGensupStartValue, H_MacGensupEndValue As String
+    Dim H_MacDepotStartValue, H_MacDepotEndValue As String
+    Dim H_MacTerefsStartValue, H_MacTerefsEndValue As String
+    Dim H_MacRemarkrefsStartValue, H_MacRemarkrefsEndValue As String
+    
+    Dim H_MacParaStartValue, H_MacParaEndValue As String
+
+    Dim H_MacGroupnoValue, H_MacNameValue As String
+    Dim H_MacMaintfuncValue, H_MacCrewValue, H_MacOrgValue As String
+    Dim H_MacDirectValue, H_MacGensupValue, H_MacDepotValue As String
+    Dim H_MacTerefsValue, H_MacRemarkrefsValue As String
+    
+    Dim H_MacTmpValue As String
+
+    H_MacGroupnoStartValue = "<groupno>"
+    H_MacGroupnoEndValue = "</groupno>"
+    H_MacCompassemStartValue = "<compassem>"
+    H_MacCompassemEndValue = "</compassem>"
+    H_MacNameStartValue = "<name>"
+    H_MacNameEndValue = "</name>"
+    H_MacTypedesStartValue = "<typedes>"
+    H_MacTypedesEndValue = "</typedes>"
+    H_MacQualifyStartValue = "<qualify>"
+    H_MacQualifyEndValue = "</qualify>"
+    
+    H_MacMaintfuncStartValue = "<maintfunc>"
+    H_MacMaintfuncEndValue = "</maintfunc>"
+    H_MacMaintclassStartValue = "<maintclass>"
+    H_MacMaintclassEndValue = "</maintclass>"
+    H_MacUnitStartValue = "<unit>"
+    H_MacUnitEndValue = "</unit>"
+    
+    H_MacCrewStartValue = "<crew>"
+    H_MacCrewEndValue = "</crew>"
+    
+    H_MacOrStartValue = "<org>"
+    H_MacOrEndValue = "</org>"
+    H_MacDirectStartValue = "<direct>"
+    H_MacDirectEndValue = "</direct>"
+    H_MacGensupStartValue = "<gensup>"
+    H_MacGensupEndValue = "</gensup>"
+    
+    H_MacDepotStartValue = "<depot>"
+    H_MacDepotEndValue = "</depot>"
+    H_MacTerefsStartValue = "<terefs>"
+    H_MacTerefsEndValue = "</terefs>"
+    H_MacRemarkrefsStartValue = "<remarkrefs>"
+    H_MacRemarkrefsEndValue = "</remarkrefs>"
+    
+    H_MacParaStartValue = "<para>"
+    H_MacParaEndValue = "</para>"
+
+    ' ****************************************************************
+    ' 정비할당표 TAG 정의 종료
+    ' ****************************************************************
+
+    ' ****************************************************************
+    ' 고장배제표 색인 TAG 정의 시작
+    ' ****************************************************************
+    Dim H_TS_tscategoryStartValue, H_TS_tscategoryEndValue As String
+    Dim H_TS_titleStartValue, H_TS_titleEndValue As String
+    Dim H_TS_tsindxentryStartValue, H_TS_tsindxentryEndValue As String
+    Dim H_TS_malfuncStartValue, H_TS_malfuncEndValue As String
+    Dim H_TS_tocxrefStartValue, H_TS_tocxrefEndValue As String
+    Dim H_TS_paraStartValue, H_TS_paraEndValue As String
+    
+    Dim H_TS_TitleValue, H_TS_MalFuncValue, H_TS_TocxrefValue As String
+    
+    Dim H_TS_TmpValue As String
+
+    H_TS_tscategoryStartValue = "<ts-category>"
+    H_TS_tscategoryEndValue = "</ts-category>"
+    H_TS_titleStartValue = "<title>"
+    H_TS_titleEndValue = "</title>"
+    H_TS_tsindxentryStartValue = "<tsindx-entry>"
+    H_TS_tsindxentryEndValue = "</tsindx-entry>"
+    H_TS_malfuncStartValue = "<malfunc>"
+    H_TS_malfuncEndValue = "</malfunc>"
+    H_TS_tocxrefStartValue = "<tocxref>"
+    H_TS_tocxrefEndValue = "</tocxref>"
+    H_TS_paraStartValue = "<para hcp=""no"" esd=""no"">"
+    H_TS_paraEndValue = "</para>"
+
+    ' ****************************************************************
+    ' 고장배제표 색인 TAG 정의 종료
+    ' ****************************************************************
+
+    ' ****************************************************************
+    ' 고장배제표 표형태 TAG 정의 시작
+    ' ****************************************************************
+    Dim H_FT_symptomStartValue, H_FT_symptomEndValue As String
+    Dim H_FT_malfuncStartValue, H_FT_malfuncEndValue As String
+    Dim H_FT_actionStartValue, H_FT_actionEndValue As String
+    Dim H_FT_paraStartValue, H_FT_paraEndValue As String
+    
+    Dim H_FT_MalfuncValue, H_FT_ActionFuncValue As String
+    Dim H_FT_CountValue As Long
+    
+    Dim H_FT_TmpValue As String
+
+    H_FT_symptomStartValue = "<symptom>"
+    H_FT_symptomEndValue = "</symptom>"
+    
+    H_FT_malfuncStartValue = "<malfunc>"
+    H_FT_malfuncEndValue = "</malfunc>"
+    
+    H_FT_actionStartValue = "<action>"
+    H_FT_actionEndValue = "</action>"
+    
+    
+    H_FT_paraStartValue = "<para hcp=""no"" esd=""no"">"
+    H_FT_paraEndValue = "</para>"
+
+    ' ****************************************************************
+    ' 고장배제표 표형태 TAG 정의 종료
+    ' ****************************************************************
+
+    ' ****************************************************************
+    ' 초기정보 설정 시작
+    ' ****************************************************************
+    
+    ' 시작정보
+    Dim H_StartNum As Long
+    H_StartNum = CLng(TBR_STARTNUM)
+    
+    Dim uCount, rCount, resultCount As Long
+    Dim OriColspecValue, resultColspecValue As Long
+    Dim tmpInsertRow, tmpEndRowCount As Long
+    Dim H_InitYN, H_InitStartYN As String
+  
+    ' 변환지 Count
+    resultCount = 1
+    
+    'TAG 삽입을 위한 ROW 설정
+    tmpEndRowCount = 0
+    
+    
+    ' ColspecWidth 값 정의
+    OriColspecValue = 652
+    resultColspecValue = 50
+    
+    '테이블ROW 갯수
+    Dim userTableRow As Integer
+    userTableRow = 0
+    ' ****************************************************************
+    ' 초기정보 설정 종료
+    ' ****************************************************************
+
+
+    ' ****************************************************************
+    ' SHEET 초기정보 설정 시작
+    ' ****************************************************************
+
+    ' 변환지 유무체계
+    ' 동일시트명 있으면 체크후 있으면 Clear
+    Call ExistCheckSheet(resultSheet)
+    
+
+    ' 전체 Worksheets를 Loding
+    Set workData = Worksheets(Worksheet).Range("A1", Sheets(Worksheet).Range("A65536").End(xlUp))
+    
+    Dim totalTempCount As Integer
+    totalTempCount = workData.Count
+    
+    ' ****************************************************************
+    ' SHEET 초기정보 설정 종료
+    ' ****************************************************************
+    H_IntLevelNumValue = 1
+
+
+    For uCount = H_StartNum To totalTempCount Step 1
+
+        Sheets(resultSheet).Select
+        Range("A" & CStr(resultCount)).Select
+        H_InitYN = Sheets(Worksheet).Range("A" + CStr(uCount)).Value
+        
+        ' ****************************************************************
+        ' 변환정보 로딩 시작
+        ' ****************************************************************
+        If H_InitYN = "" Then
+            H_CharStepResult = "미변환"
+            H_CharCom_Value = ""
+        ' ****************************************************************
+        ' 변환정보 로딩 종료
+        ' ****************************************************************
+            
+            
+        ' ****************************************************************
+        ' 일반자료 로딩 시작
+        ' ****************************************************************
+        ElseIf H_InitYN = "[[일반]]" Or H_InitYN = "[[주]]" Or H_InitYN = "[[주의]]" Or H_InitYN = "[[경고]]" Then
+
+            H_CharStepValue = Sheets(Worksheet).Range("B" + CStr(uCount)).Value
+            H_CharLevelNumValue = Sheets(Worksheet).Range("C" + CStr(uCount)).Value
+            H_CharOriginValue = Sheets(Worksheet).Range("D" + CStr(uCount)).Value
+            H_LeveLenValue = 1
+            
+            If IsNumeric(Left(H_CharLevelNumValue, 1)) Then
+                H_IntLevelNumValue = CLng(Left(H_CharLevelNumValue, 1))
+                H_LeveLenValue = Len(H_CharLevelNumValue)
+            Else
+                H_IntLevelNumValue = 0
+                H_LeveLenValue = 1
+            End If
+
+
+            If H_CharStepValue = "[[목차]]" Then
+                tmpEndRowCount = 0
+                H_ContIntLevelNumValue = H_IntLevelNumValue
+                
+                 H_CharStepResult = "목차"
+                 H_CharCom_Value = "[검색:#####]" + H_CharOriginValue
+
+                ' 변환지 설정 (여기가 항에 노랑색)
+                resultCount = resultCount + 2
+             
+                Sheets(resultSheet).Select
+                Range("A" + CStr(resultCount)).Select
+                
+                Sheets(resultSheet).Range("A" + CStr(resultCount)).Value = H_InitYN
+                Sheets(resultSheet).Range("B" + CStr(resultCount)).Value = H_CharStepResult
+                Sheets(resultSheet).Range("C" + CStr(resultCount)).Value = H_CharCom_Value
+                
+                
+                '색상지정
+                Rows(resultCount).Select
+                With Selection.Interior
+                    .ColorIndex = 6
+                    .Pattern = xlSolid
+                End With
+                
+            ElseIf H_InitYN = "[[주]]" And H_CharLevelNumValue = "[[START]]" Then
+            
+                tmpEndRowCount = 0
+                
+                 ' 변환지 설정
+               
+                
+                 ' 변환지 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_NoteStartTagValue)
+                
+                
+                 ' 변환지 설정
+            
+                
+            ElseIf H_InitYN = "[[주의]]" And H_CharLevelNumValue = "[[START]]" Then
+            
+                tmpEndRowCount = 0
+                
+                 ' 변환지 설정
+                
+                
+                 ' 변환지 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_CautionStartTagValue)
+                
+                
+                 ' 변환지 설정
+                
+            
+            ElseIf H_InitYN = "[[경고]]" And H_CharLevelNumValue = "[[START]]" Then
+            
+                tmpEndRowCount = 0
+                
+                 ' 변환지 설정
+                
+                
+                 ' 변환지 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_WarningStartTagValue)
+                
+                
+                 ' 변환지 설정
+                
+
+            Else
+                tmpEndRowCount = tmpEndRowCount + 1
+            
+
+                ' H_IntLevelNumValue 현재 선택 레벨
+                ' H_ContIntLevelNumValue : 목차 선택 레벨
+                H_ComStepValue = 0
+                If H_IntLevelNumValue > H_ContIntLevelNumValue Then
+                   H_ComStepValue = H_InitValue(H_ContIntLevelNumValue)
+                   For H_tempnum = H_ContIntLevelNumValue To H_IntLevelNumValue - 1 Step 1
+                        H_ComStepValue = H_ComStepValue + H_StepValue(H_tempnum)
+                   Next
+                   
+                   H_ComInitValue = H_ComStepValue - H_StepValue(H_IntLevelNumValue - 1)
+                   If H_LeveLenValue <> 1 Then
+                        H_ComStepValue = H_ComInitValue
+                   End If
+
+                Else
+                    H_ComInitValue = 0
+                    H_ComStepValue = 0
+                End If
+            
+                H_CharCom_Value = H_CharStartTagValue & H_CharMiddleTagValue & H_CharOriginValue & H_CharEndTagValue
+                J_CharCom_Value = J_wAcStartTagValue & H_CharMiddleTagValue & H_CharOriginValue & J_wAcEndTagValue
+                S_CharCom_Value = J_noteparaStartTagValue & H_CharMiddleTagValue & H_CharOriginValue & J_noteparaEndTagValue
+                
+                
+                ' 지시사항 반영
+                resultCount = resultCount + 1
+                Sheets(resultSheet).Select
+                Range("A" + CStr(resultCount)).Select
+                Sheets(resultSheet).Range("A" + CStr(resultCount)).Value = H_InitYN
+                If H_InitYN = "[[일반]]" Then
+                    Sheets(resultSheet).Range("C" + CStr(resultCount)).Value = H_CharCom_Value
+                ElseIf H_InitYN = "[[주]]" Then
+                    Sheets(resultSheet).Range("C" + CStr(resultCount)).Value = S_CharCom_Value
+                ElseIf H_InitYN = "[[주의]]" Or H_InitYN = "[[경고]]" Then
+                    Sheets(resultSheet).Range("C" + CStr(resultCount)).Value = J_CharCom_Value
+                End If
+            End If
+
+            If tmpEndRowCount > 0 Then
+                If (Sheets(Worksheet).Range("A" + CStr(uCount + 1)).Value = H_InitYN) Then
+                    If (Sheets(Worksheet).Range("C" + CStr(uCount + 1)).Value = "[[START]]") Then
+                    
+                        ' END TAG 값 설정
+                        If H_InitYN = "[[주]]" Then
+                            
+                        
+                            resultCount = resultCount + 1
+                            Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                            Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), J_noteparaStartTagValue)
+                            
+                            resultCount = resultCount + 1
+                            Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                            Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), J_noteparaEndTagValue)
+                            
+                        ElseIf H_InitYN = "[[주의]]" Then
+                            
+                                                
+                            resultCount = resultCount + 1
+                            Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                            Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), J_wAcStartTagValue)
+                            
+                            resultCount = resultCount + 1
+                            Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                            Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_ParaTagEndValue)
+                            
+                        ElseIf H_InitYN = "[[경고]]" Then
+                            
+
+                            resultCount = resultCount + 1
+                            Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                            Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), J_wAcStartTagValue)
+                            
+                            resultCount = resultCount + 1
+                            Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                            Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), J_wAcEndTagValue)
+                        End If
+
+                    End If
+                Else
+                    ' END TAG 값 설정
+                        If H_InitYN = "[[주]]" Then
+                            
+                        
+                            resultCount = resultCount + 1
+                            Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                            Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_NoteEndTagValue)
+                            
+                            
+                            
+                        ElseIf H_InitYN = "[[주의]]" Then
+                            
+                                                
+                            resultCount = resultCount + 1
+                            Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                            Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_CautionEndTagValue)
+                            
+                            
+                            
+                        ElseIf H_InitYN = "[[경고]]" Then
+                        
+                            
+
+                            resultCount = resultCount + 1
+                            Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                            Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_WarningEndTagValue)
+                            
+                            
+                        End If
+                End If
+           End If
+
+
+        ' ****************************************************************
+        ' 일반자료 로딩 종료
+        ' ****************************************************************
+    
+
+        ' ****************************************************************
+        ' 도표 로딩 시작
+        ' ****************************************************************
+        ElseIf H_InitYN = "[[도표]]" Then
+        
+            Sheets(resultSheet).Select
+            Range("A" & CStr(resultCount)).Select
+            H_InitStartYN = Sheets(Worksheet).Range("C" + CStr(uCount)).Value
+            
+            H_Com_Value = ""
+            H_Com_StartValue = ""
+            H_ParaTagStartValue = "<para>"
+            If H_InitStartYN = "[[START]]" Then
+                tmpEndRowCount = 0
+                userTableRow = 0
+                rCount = 1
+                
+                For rCount = 0 To 50 Step 1
+                    If Sheets(Worksheet).Cells(uCount, rCount + 2).Value = "[[END]]" Then
+                        userTableRow = rCount - 1
+                    End If
+                Next rCount
+                
+                resultColspecValue = OriColspecValue / (userTableRow + 1)
+    
+                ' PARA TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_ParaTagStartValue)
+
+                ' TABLE START TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_TableTagStartValue)
+                
+                ' TITLE START TAG 값 설정
+                resultCount = resultCount + 1
+                H_Com_Value = H_TitleTagStartValue & H_TitleTagEndValue
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_Com_Value)
+                
+                ' TGROUP START TAG 값 설정
+                resultCount = resultCount + 1
+                H_TgroupTagStartValue = "<tgroup cols=""" & (userTableRow + 1) & """ align=""center"">"
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_TgroupTagStartValue)
+                
+                ' COLSPEC START TAG 값 설정
+                For rCount = 1 To userTableRow + 1 Step 1
+                
+                    H_ColspecStartValue = "<colspec colnum=""" & rCount & """ colname=""col" & rCount & """ colwidth=""" & resultColspecValue & """>"
+                    
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_ColspecStartValue & H_ColspecEndValue)
+                Next rCount
+                
+                ' TBODY START TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_TbodyStartValue)
+                
+            Else
+                tmpEndRowCount = tmpEndRowCount + 1
+            
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_RowTagStartValue)
+                
+                For rCount = 1 To userTableRow + 1 Step 1
+                    H_OriginValue = Sheets(Worksheet).Cells(uCount, rCount + 2).Value
+                    H_EntryTagStartValue = "<entry colname=""col" & (rCount) & """ alignv=""middle"" align=""left"" colnum=""" & (rCount) & """>"
+                    H_ParaTagStartValue = "<para hcp=""no"" esd=""no"">"
+                    H_Com_Value = H_ParaTagStartValue & H_OriginValue & H_ParaTagEndValue
+                    
+                    ' Entry START TAG 값 설정
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_EntryTagStartValue)
+                    
+                    ' PARA START TAG 값 설정
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_Com_Value)
+                    
+                    ' Entry END TAG 값 설정
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_EntryTagEndValue)
+                Next rCount
+                
+                ' ROW END TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_RowTagEndValue)
+                
+            End If
+            
+            
+            If tmpEndRowCount > 0 Then
+                If (Sheets(Worksheet).Range("A" + CStr(uCount + 1)).Value = H_InitYN) Then
+                    If (Sheets(Worksheet).Range("C" + CStr(uCount + 1)).Value = "[[START]]") Then
+                        ' TBODY END TAG 값 설정
+                        resultCount = resultCount + 1
+                        Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                        Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_TbodyEndValue)
+                        
+                        ' TGROUP END TAG 값 설정
+                        resultCount = resultCount + 1
+                        Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                        Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_TgroupTagEndValue)
+            
+                        ' TABLE END TAG 값 설정
+                        resultCount = resultCount + 1
+                        Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                        Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_TableTagEndValue)
+                        
+                        ' PARA END TAG 값 설정
+                        resultCount = resultCount + 1
+                        Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                        Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_ParaTagEndValue)
+                    End If
+                Else
+                    ' TBODY END TAG 값 설정
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_TbodyEndValue)
+                        
+                    ' TGROUP END TAG 값 설정
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_TgroupTagEndValue)
+            
+                    ' TABLE END TAG 값 설정
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_TableTagEndValue)
+                    
+                    ' PARA END TAG 값 설정
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_ParaTagEndValue)
+                End If
+           End If
+            
+        ' ****************************************************************
+        ' 도표 로딩 종료
+        ' ****************************************************************
+        
+        ' ****************************************************************
+        ' 지시기 로딩 시작
+        ' ****************************************************************
+        ElseIf H_InitYN = "[[지시]]" Then
+
+            Sheets(resultSheet).Select
+            Range("A" & CStr(resultCount)).Select
+            H_InitStartYN = Sheets(Worksheet).Range("C" + CStr(uCount)).Value
+            
+            H_JoCom_Value = ""
+            H_ParaTagStartValue = "<para>"
+            
+            If H_InitStartYN = "[[품목번호]]" Then
+            
+                tmpEndRowCount = 0
+                userTableRow = 0
+                rCount = 1
+                
+                ' PARA START TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_ParaTagStartValue)
+                
+                
+                ' CTRLIND START TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_JoCtrlindtabStartValue)
+                
+                ' TITLE START TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_JoTitleStartValue & H_JoTitleEndValue)
+
+                
+            Else
+            
+                tmpEndRowCount = tmpEndRowCount + 1
+            
+                H_PumValue = Sheets(Worksheet).Range("C" + CStr(uCount)).Value
+                H_JojungValue = Sheets(Worksheet).Range("D" + CStr(uCount)).Value
+                H_FuncValue = Sheets(Worksheet).Range("E" + CStr(uCount)).Value
+                
+                
+                ' CTRLINDROW START TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_JoCtrlindrowTagStartValue)
+                
+                ' KEY START TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_JoKeyTagStartValue)
+                
+                
+                H_JoCom_Value = H_JoParaTagStartValue
+                H_JoCom_Value = H_JoCom_Value & H_PumValue
+                H_JoCom_Value = H_JoCom_Value & H_JoParaTagEndValue
+                
+                ' PART TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_JoCom_Value)
+                
+                ' KEY END TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_JoKeyTagEndValue)
+                
+                ' CTRLIND START TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_JoCtrlindTagStartValue)
+
+
+                H_JoCom_Value = H_JoParaTagStartValue
+                H_JoCom_Value = H_JoCom_Value & H_JojungValue
+                H_JoCom_Value = H_JoCom_Value & H_JoParaTagEndValue
+                
+                ' PART TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_JoCom_Value)
+                
+                
+                ' CTRLIND TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_JoCtrlindTagEndValue)
+                
+                ' FUNCTION TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_JoFunctionTagStartValue)
+                
+
+                H_JoCom_Value = H_JoParaTagStartValue
+                H_JoCom_Value = H_JoCom_Value & H_FuncValue
+                H_JoCom_Value = H_JoCom_Value & H_JoParaTagEndValue
+                
+                ' PART TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_JoCom_Value)
+                
+                ' FUNCTION END TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_JoFunctionTagEndValue)
+                                
+                ' CTRLINDROW END TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_JoCtrlindrowTagEndValue)
+    
+            End If
+            
+            If tmpEndRowCount > 0 Then
+                If (Sheets(Worksheet).Range("A" + CStr(uCount + 1)).Value = H_InitYN) Then
+                    If (Sheets(Worksheet).Range("C" + CStr(uCount + 1)).Value = H_InitStartYN) Then
+                    
+                        ' CTRLIND END TAG 값 설정
+                        resultCount = resultCount + 1
+                        Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                        Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_JoCtrlindtabEndValue)
+                        
+                        ' PARA END TAG 값 설정
+                        resultCount = resultCount + 1
+                        Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                        Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_ParaTagEndValue)
+            
+                    End If
+                Else
+                    ' CTRLIND END TAG 값 설정
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_JoCtrlindtabEndValue)
+                        
+                    ' PARA END TAG 값 설정
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_ParaTagEndValue)
+                End If
+           End If
+        
+        ' ****************************************************************
+        ' 지시기 로딩 종료
+        ' ****************************************************************
+        
+        
+        ' ****************************************************************
+        ' 참고문헌 로딩 시작
+        ' ****************************************************************
+        ElseIf H_InitYN = "[[참고]]" Then
+
+            Sheets(resultSheet).Select
+            Range("A" & CStr(resultCount)).Select
+            H_InitStartYN = Sheets(Worksheet).Range("C" + CStr(uCount)).Value
+            
+            H_ParaTagStartValue = "<para>"
+            
+            If H_InitStartYN = "[[참고문헌]]" Then
+            
+                tmpEndRowCount = 0
+                userTableRow = 0
+                rCount = 1
+                
+                resultCount = resultCount + 2
+             
+                Sheets(resultSheet).Select
+                Range("A" + CStr(resultCount)).Select
+                
+                Sheets(resultSheet).Range("A" + CStr(resultCount)).Value = H_InitYN
+                Sheets(resultSheet).Range("C" + CStr(resultCount)).Value = "### " & H_InitYN & "START ###"
+                
+                '색상지정
+                Rows(resultCount).Select
+                With Selection.Interior
+                    .ColorIndex = 6
+                    .Pattern = xlSolid
+                End With
+                
+            Else
+
+                H_RefNameValue = Sheets(Worksheet).Range("C" + CStr(uCount)).Value
+                H_RefPubidentValue = Sheets(Worksheet).Range("D" + CStr(uCount)).Value
+              
+                
+                ' NAME TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_RefNameStartValue)
+                
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_ParaTagStartValue & H_RefNameValue & H_ParaTagEndValue)
+                
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_RefNameEndValue)
+                
+                
+                ' PUBIDENT TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_RefPubidentStartValue)
+                
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_ParaTagStartValue & H_RefPubidentValue & H_ParaTagEndValue)
+                
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_RefPubidentEndValue)
+              
+            End If
+        ' ****************************************************************
+        ' 참고문헌 로딩 종료
+        ' ****************************************************************
+       
+        
+        ' ****************************************************************
+        ' 완제품/기본불출/추가인가 로딩 시작
+        ' ****************************************************************
+        ElseIf H_InitYN = "[[완제품]]" Or H_InitYN = "[[기본불출]]" Or H_InitYN = "[[추가인가]]" Then
+
+            Sheets(resultSheet).Select
+            Range("A" & CStr(resultCount)).Select
+            H_InitStartYN = Sheets(Worksheet).Range("C" + CStr(uCount)).Value
+            
+            H_ParaTagStartValue = "<para>"
+           
+            If H_InitStartYN = "[[품목번호]]" Then
+            
+                tmpEndRowCount = 0
+                userTableRow = 0
+                rCount = 1
+                
+                resultCount = resultCount + 2
+             
+                Sheets(resultSheet).Select
+                Range("A" + CStr(resultCount)).Select
+                
+                Sheets(resultSheet).Range("A" + CStr(resultCount)).Value = H_InitYN
+                Sheets(resultSheet).Range("C" + CStr(resultCount)).Value = "### " & H_InitYN & " START ###"
+                
+                '색상지정
+                Rows(resultCount).Select
+                With Selection.Interior
+                    .ColorIndex = 6
+                    .Pattern = xlSolid
+                End With
+                
+            Else
+          
+                H_CmpResIllnoValue = Sheets(Worksheet).Range("C" + CStr(uCount)).Value
+                H_CmpResNsnValue = Sheets(Worksheet).Range("D" + CStr(uCount)).Value
+                H_CmpResNameValue = Sheets(Worksheet).Range("E" + CStr(uCount)).Value
+                H_CmpResCagenoValue = Sheets(Worksheet).Range("F" + CStr(uCount)).Value
+                H_CmpResPartnoValue = Sheets(Worksheet).Range("G" + CStr(uCount)).Value
+                H_CmpResUmValue = Sheets(Worksheet).Range("H" + CStr(uCount)).Value
+                H_CmpResQtyValue = Sheets(Worksheet).Range("I" + CStr(uCount)).Value
+            
+            
+                If H_InitYN = "[[완제품]]" Then
+                    ' COEI-ENTRY START TAG 값 설정
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_CmpCoeiEntryStartValue)
+                ElseIf H_InitYN = "[[기본불출]]" Then
+                    'BII-ENTRY START TAG 값 설정
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_CmpBiiEntryStartValue)
+                ElseIf H_InitYN = "[[추가인가]]" Then
+                    'AAL-ENTRY START TAG 값 설정
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_CmpAalEntryStartValue)
+                Else
+                    ' COEI-ENTRY START TAG 값 설정
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_CmpCoeiEntryStartValue)
+                End If
+               
+               
+               
+                If H_InitYN = "[[추가인가]]" Then
+
+                Else
+                    ' illno START TAG 값 설정
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_CmpIllnoStartValue)
+                    
+                    H_CmpTmpValue = H_CmpParaStartValue
+                    H_CmpTmpValue = H_CmpTmpValue & H_CmpResIllnoValue
+                    H_CmpTmpValue = H_CmpTmpValue & H_CmpParaEndValue
+                    
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_CmpTmpValue)
+                    
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_CmpIllnoEndValue)
+                End If
+               
+
+                ' NSN START TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_CmpNsnStartValue)
+                
+                H_CmpTmpValue = H_CmpParaStartValue
+                H_CmpTmpValue = H_CmpTmpValue & H_CmpResNsnValue
+                H_CmpTmpValue = H_CmpTmpValue & H_CmpParaEndValue
+                
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_CmpTmpValue)
+                
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_CmpNsnEndValue)
+
+                
+                ' ECPNO START TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_CmpDcpnoStartValue)
+                
+                
+                ' NAME START TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_CmpNameStartValue)
+                
+                H_CmpTmpValue = H_CmpParaStartValue
+                H_CmpTmpValue = H_CmpTmpValue & H_CmpResNameValue
+                H_CmpTmpValue = H_CmpTmpValue & H_CmpParaEndValue
+                
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_CmpTmpValue)
+                
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_CmpNameEndValue)
+                
+                
+                ' DESC START TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_CmpDescStartValue)
+                
+                H_CmpTmpValue = H_CmpParaStartValue
+                H_CmpTmpValue = H_CmpTmpValue & H_CmpParaEndValue
+                
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_CmpTmpValue)
+                
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_CmpDescEndValue)
+                
+                
+                ' CAGE TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_CmpCagenoStartValue)
+                
+                H_CmpTmpValue = H_CmpParaStartValue
+                H_CmpTmpValue = H_CmpTmpValue & H_CmpResCagenoValue
+                H_CmpTmpValue = H_CmpTmpValue & H_CmpParaEndValue
+                
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_CmpTmpValue)
+                
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_CmpCagenoEndValue)
+                
+                
+                ' PARTNO TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_CmpPartnoStartValue)
+                
+                
+                H_CmpTmpValue = H_CmpParaStartValue
+                H_CmpTmpValue = H_CmpTmpValue & H_CmpResPartnoValue
+                H_CmpTmpValue = H_CmpTmpValue & H_CmpParaEndValue
+                
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_CmpTmpValue)
+                
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_CmpPartnoEndValue)
+                
+                
+                ' UOC TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_CmpUocStartValue)
+                
+                
+                H_CmpTmpValue = H_CmpParaStartValue
+                H_CmpTmpValue = H_CmpTmpValue & H_CmpParaEndValue
+                
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_CmpTmpValue)
+                
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_CmpUocEndValue)
+                
+                
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_CmpDcpnoEndValue)
+                
+                
+                ' UM TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_CmpUmStartValue)
+                
+                
+                H_CmpTmpValue = H_CmpParaStartValue
+                H_CmpTmpValue = H_CmpTmpValue & H_CmpResUmValue
+                H_CmpTmpValue = H_CmpTmpValue & H_CmpParaEndValue
+                
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_CmpTmpValue)
+                
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_CmpUmEndValue)
+                
+                                
+                ' QTY TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_CmpQtyStartValue)
+                
+                H_CmpTmpValue = H_CmpParaStartValue
+                H_CmpTmpValue = H_CmpTmpValue & H_CmpResQtyValue
+                H_CmpTmpValue = H_CmpTmpValue & H_CmpParaEndValue
+                
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_CmpTmpValue)
+                
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_CmpQtyEndValue)
+                                
+                
+                
+               If H_InitYN = "[[완제품]]" Then
+                    ' COEI-ENTRY  END TAG 값 설정
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_CmpCoeiEntryEndValue)
+                ElseIf H_InitYN = "[[기본불출]]" Then
+                    'BII-ENTRY END TAG 값 설정
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_CmpBiiEntryEndValue)
+                ElseIf H_InitYN = "[[추가인가]]" Then
+                    'AAL-ENTRY END TAG 값 설정
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_CmpAalEntryEndValue)
+                Else
+                    ' COEI-ENTRY  END TAG 값 설정
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_CmpCoeiEntryEndValue)
+                End If
+
+            End If
+        ' ****************************************************************
+        ' 완제품의 별도포장 품목 로딩 종료
+        ' ****************************************************************
+        
+        
+        ' ****************************************************************
+        ' 소모성 보급품 및 물자목록 로딩 시작
+        ' ****************************************************************
+        ElseIf H_InitYN = "[[소모성]]" Then
+
+            Sheets(resultSheet).Select
+            Range("A" & CStr(resultCount)).Select
+            H_InitStartYN = Sheets(Worksheet).Range("C" + CStr(uCount)).Value
+            
+            H_ParaTagStartValue = "<para>"
+           
+            If H_InitStartYN = "[[품목번호]]" Then
+            
+                tmpEndRowCount = 0
+                userTableRow = 0
+                rCount = 1
+                
+                resultCount = resultCount + 2
+             
+                Sheets(resultSheet).Select
+                Range("A" + CStr(resultCount)).Select
+                
+                Sheets(resultSheet).Range("A" + CStr(resultCount)).Value = H_InitYN
+                Sheets(resultSheet).Range("C" + CStr(resultCount)).Value = "### " & H_InitYN & " START ###"
+                
+                '색상지정
+                Rows(resultCount).Select
+                With Selection.Interior
+                    .ColorIndex = 6
+                    .Pattern = xlSolid
+                End With
+                
+            Else
+          
+                H_ExpResItemnoValue = Sheets(Worksheet).Range("C" + CStr(uCount)).Value
+                H_ExpResLvlValue = Sheets(Worksheet).Range("D" + CStr(uCount)).Value
+                H_ExpResNsnValue = Sheets(Worksheet).Range("E" + CStr(uCount)).Value
+                H_ExpResNameValue = Sheets(Worksheet).Range("F" + CStr(uCount)).Value
+                H_ExpResDescValue = Sheets(Worksheet).Range("G" + CStr(uCount)).Value
+                H_ExpResCagenoValue = Sheets(Worksheet).Range("H" + CStr(uCount)).Value
+                H_ExpResPartnoValue = ""
+                H_ExpResUmValue = Sheets(Worksheet).Range("I" + CStr(uCount)).Value
+            
+
+                ' EXPDUR-ENTRY START TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_ExpdurEntryStartValue)
+
+                ' ITEM TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_ExpItemnoStartValue)
+                    
+                H_ExpTmpValue = H_ExpParaStartValue
+                H_ExpTmpValue = H_ExpTmpValue & H_ExpResItemnoValue
+                H_ExpTmpValue = H_ExpTmpValue & H_ExpParaEndValue
+                    
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_ExpTmpValue)
+                    
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_ExpItemnoEndValue)
+
+                ' LVL TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_ExpLvlStartValue)
+                    
+                H_ExpTmpValue = H_ExpParaStartValue
+                H_ExpTmpValue = H_ExpTmpValue & H_ExpResLvlValue
+                H_ExpTmpValue = H_ExpTmpValue & H_ExpParaEndValue
+                    
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_ExpTmpValue)
+                    
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_ExpLvlEndValue)
+                
+                ' NSN TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_ExpNsnStartValue)
+                    
+                H_ExpTmpValue = H_ExpParaStartValue
+                H_ExpTmpValue = H_ExpTmpValue & H_ExpResNsnValue
+                H_ExpTmpValue = H_ExpTmpValue & H_ExpParaEndValue
+                    
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_ExpTmpValue)
+                    
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_ExpNsnEndValue)
+                 
+                ' NAME TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_ExpNameStartValue)
+                    
+                H_ExpTmpValue = H_ExpParaStartValue
+                H_ExpTmpValue = H_ExpTmpValue & H_ExpResNameValue
+                H_ExpTmpValue = H_ExpTmpValue & H_ExpParaEndValue
+                    
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_ExpTmpValue)
+                    
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_ExpNameEndValue)
+                
+                ' DESC TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_ExpDescStartValue)
+                    
+                H_ExpTmpValue = H_ExpParaStartValue
+                H_ExpTmpValue = H_ExpTmpValue & H_ExpResDescValue
+                H_ExpTmpValue = H_ExpTmpValue & H_ExpParaEndValue
+                    
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_ExpTmpValue)
+                    
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_ExpDescEndValue)
+                
+                ' CAGE TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_ExpCagenoStartValue)
+                    
+                H_ExpTmpValue = H_ExpParaStartValue
+                H_ExpTmpValue = H_ExpTmpValue & H_ExpResCagenoValue
+                H_ExpTmpValue = H_ExpTmpValue & H_ExpParaEndValue
+                    
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_ExpTmpValue)
+                    
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_ExpCagenoEndValue)
+                
+                ' PART TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_ExpPartnoStartValue)
+                    
+                H_ExpTmpValue = H_ExpParaStartValue
+                H_ExpTmpValue = H_ExpTmpValue & H_ExpResPartnoValue
+                H_ExpTmpValue = H_ExpTmpValue & H_ExpParaEndValue
+                    
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_ExpTmpValue)
+                    
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_ExpPartnoEndValue)
+                
+                ' UM TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_ExpUmStartValue)
+                    
+                H_ExpTmpValue = H_ExpParaStartValue
+                H_ExpTmpValue = H_ExpTmpValue & H_ExpResUmValue
+                H_ExpTmpValue = H_ExpTmpValue & H_ExpParaEndValue
+                    
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_ExpTmpValue)
+                    
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_ExpUmEndValue)
+                
+                ' EXPDURE-ENTRY 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_ExpdurEntryEndValue)
+
+            End If
+        ' ****************************************************************
+        ' 소모성 보급품 및 물자목록 로딩 종료
+        ' ****************************************************************
+        
+        ' ****************************************************************
+        ' 정비용 장비 및 공구 일람표(지상) 로딩 시작
+        ' ****************************************************************
+        ElseIf H_InitYN = "[[정비공구(지상)]]" Then
+
+            Sheets(resultSheet).Select
+            Range("A" & CStr(resultCount)).Select
+            H_InitStartYN = Sheets(Worksheet).Range("C" + CStr(uCount)).Value
+            
+            H_ParaTagStartValue = "<para>"
+           
+            If H_InitStartYN = "[[참조번호]]" Then
+            
+                tmpEndRowCount = 0
+                userTableRow = 0
+                rCount = 1
+                
+                resultCount = resultCount + 2
+             
+                Sheets(resultSheet).Select
+                Range("A" + CStr(resultCount)).Select
+                
+                Sheets(resultSheet).Range("A" + CStr(resultCount)).Value = H_InitYN
+                Sheets(resultSheet).Range("C" + CStr(resultCount)).Value = "### " & H_InitYN & " START ###"
+                
+                '색상지정
+                Rows(resultCount).Select
+                With Selection.Interior
+                    .ColorIndex = 6
+                    .Pattern = xlSolid
+                End With
+                
+            Else
+          
+                H_TerResTerfcodeValue = Sheets(Worksheet).Range("C" + CStr(uCount)).Value
+                H_TerResMaintenanceValue = Sheets(Worksheet).Range("D" + CStr(uCount)).Value
+                H_TerResNameValue = Sheets(Worksheet).Range("E" + CStr(uCount)).Value
+                H_TerResNsnValue = Sheets(Worksheet).Range("F" + CStr(uCount)).Value
+                H_TerResToolnoValue = Sheets(Worksheet).Range("G" + CStr(uCount)).Value
+                H_TerResPicnumValue = Sheets(Worksheet).Range("H" + CStr(uCount)).Value
+                H_TerResItemnoValue = Sheets(Worksheet).Range("I" + CStr(uCount)).Value
+            
+                ' TEREFCODE START TAG 값 설정
+                H_TerTmpValue = H_TerTerefcodeStartValue
+                H_TerTmpValue = H_TerTmpValue & H_TerResTerfcodeValue
+                H_TerTmpValue = H_TerTmpValue & H_TerTerefcodeEndValue
+                    
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_TerTmpValue)
+
+                
+                ' MAINTENANCE START TAG 값 설정
+'               H_TerTmpValue = H_TerParaStartValue
+'               H_TerTmpValue = H_TerTmpValue & H_TerResMaintenanceValue
+'               H_TerTmpValue = H_TerTmpValue & H_TerParaEndValue
+                    
+                H_TerTmpValue = "<maintenance lvl=""" & H_TerResMaintenanceValue & """>" & H_TerResMaintenanceValue & "</maintenance>"
+                    
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_TerTmpValue)
+                    
+                
+                ' NAME START TAG 값 설정
+                H_TerTmpValue = H_TerNameStartValue
+                H_TerTmpValue = H_TerTmpValue & H_TerResNameValue
+                H_TerTmpValue = H_TerTmpValue & H_TerNameEndValue
+                    
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_TerTmpValue)
+                
+                ' NSN START TAG 값 설정
+                H_TerTmpValue = H_TerNsnStartValue
+                H_TerTmpValue = H_TerTmpValue & H_TerResNsnValue
+                H_TerTmpValue = H_TerTmpValue & H_TerNsnEndValue
+                    
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_TerTmpValue)
+            
+            
+                 ' TOOLNO START TAG 값 설정
+                H_TerTmpValue = H_TerToolnoStartValue
+                H_TerTmpValue = H_TerTmpValue & H_TerResToolnoValue
+                H_TerTmpValue = H_TerTmpValue & H_TerToolnoEndValue
+                    
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_TerTmpValue)
+            
+            
+                 ' PICNUM START TAG 값 설정
+                H_TerTmpValue = H_TerPicnumStartValue
+                H_TerTmpValue = H_TerTmpValue & H_TerResPicnumValue
+                H_TerTmpValue = H_TerTmpValue & H_TerPicnumEndValue
+                    
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_TerTmpValue)
+            
+                 ' ITEMNO START TAG 값 설정
+                H_TerTmpValue = H_TerItemnoStartValue
+                H_TerTmpValue = H_TerTmpValue & H_TerResItemnoValue
+                H_TerTmpValue = H_TerTmpValue & H_TerItemnoEndValue
+                    
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_TerTmpValue)
+
+            End If
+        ' ****************************************************************
+        ' 정비용 장비 및 공구 일람표 로딩 종료
+        ' ****************************************************************
+        
+        
+        ' ****************************************************************
+        ' 정비용 장비 및 공구 일람표(해상) 로딩 시작
+        ' ****************************************************************
+        ElseIf H_InitYN = "[[정비공구(해상)]]" Then
+
+            Sheets(resultSheet).Select
+            Range("A" & CStr(resultCount)).Select
+            H_InitStartYN = Sheets(Worksheet).Range("C" + CStr(uCount)).Value
+            
+            H_ParaTagStartValue = "<para>"
+           
+            If H_InitStartYN = "[[참조번호]]" Then
+            
+                tmpEndRowCount = 0
+                userTableRow = 0
+                rCount = 1
+                
+                resultCount = resultCount + 2
+             
+                Sheets(resultSheet).Select
+                Range("A" + CStr(resultCount)).Select
+                
+                Sheets(resultSheet).Range("A" + CStr(resultCount)).Value = H_InitYN
+                Sheets(resultSheet).Range("C" + CStr(resultCount)).Value = "### " & H_InitYN & " START ###"
+                
+                '색상지정
+                Rows(resultCount).Select
+                With Selection.Interior
+                    .ColorIndex = 6
+                    .Pattern = xlSolid
+                End With
+                
+            Else
+          
+                H_TerResTerfcodeValue = Sheets(Worksheet).Range("C" + CStr(uCount)).Value
+                H_TerResMaintenanceValue = Sheets(Worksheet).Range("D" + CStr(uCount)).Value
+                H_TerResNameValue = Sheets(Worksheet).Range("E" + CStr(uCount)).Value
+                H_TerResNsnValue = Sheets(Worksheet).Range("F" + CStr(uCount)).Value
+                H_TerResToolnoValue = Sheets(Worksheet).Range("G" + CStr(uCount)).Value
+                H_TerResPicnumValue = Sheets(Worksheet).Range("H" + CStr(uCount)).Value
+                H_TerResItemnoValue = Sheets(Worksheet).Range("I" + CStr(uCount)).Value
+            
+                ' TEREFCODE START TAG 값 설정
+                H_TerTmpValue = H_TerTerefcodeStartValue
+                H_TerTmpValue = H_TerTmpValue & H_TerResTerfcodeValue
+                H_TerTmpValue = H_TerTmpValue & H_TerTerefcodeEndValue
+                    
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_TerTmpValue)
+
+                
+                ' MAINTENANCE START TAG 값 설정
+'               H_TerTmpValue = H_TerParaStartValue
+'               H_TerTmpValue = H_TerTmpValue & H_TerResMaintenanceValue
+'               H_TerTmpValue = H_TerTmpValue & H_TerParaEndValue
+                    
+                H_TerTmpValue = "<maintenance lvl=""" & H_TerResMaintenanceValue & """></maintenance>"
+                    
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_TerTmpValue)
+                    
+                
+                ' NAME START TAG 값 설정
+                H_TerTmpValue = H_TerNameStartValue
+                H_TerTmpValue = H_TerTmpValue & H_TerResNameValue
+                H_TerTmpValue = H_TerTmpValue & H_TerNameEndValue
+                    
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_TerTmpValue)
+                
+                ' NSN START TAG 값 설정
+                H_TerTmpValue = H_TerNsnStartValue
+                H_TerTmpValue = H_TerTmpValue & H_TerResNsnValue
+                H_TerTmpValue = H_TerTmpValue & H_TerNsnEndValue
+                    
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_TerTmpValue)
+            
+            
+                 ' TOOLNO START TAG 값 설정
+                H_TerTmpValue = H_TerToolnoStartValue
+                H_TerTmpValue = H_TerTmpValue & H_TerResToolnoValue
+                H_TerTmpValue = H_TerTmpValue & H_TerToolnoEndValue
+                    
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_TerTmpValue)
+            
+            
+                 ' PICNUM START TAG 값 설정
+                H_TerTmpValue = H_TerPicnumStartValue
+                H_TerTmpValue = H_TerTmpValue & H_TerResPicnumValue
+                H_TerTmpValue = H_TerTmpValue & H_TerPicnumEndValue
+                    
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_TerTmpValue)
+            
+                 ' ITEMNO START TAG 값 설정
+                H_TerTmpValue = H_TerItemnoStartValue
+                H_TerTmpValue = H_TerTmpValue & H_TerResItemnoValue
+                H_TerTmpValue = H_TerTmpValue & H_TerItemnoEndValue
+                    
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_TerTmpValue)
+
+            End If
+        ' ****************************************************************
+        ' 정비용 장비 및 공구 일람표 로딩 종료
+        ' ****************************************************************
+
+        
+        ' ****************************************************************
+        ' 정비할당표 비고 로딩 시작
+        ' ****************************************************************
+        ElseIf H_InitYN = "[[정비비고]]" Then
+
+            Sheets(resultSheet).Select
+            Range("A" & CStr(resultCount)).Select
+            H_InitStartYN = Sheets(Worksheet).Range("C" + CStr(uCount)).Value
+            
+            H_ParaTagStartValue = "<para>"
+           
+            If H_InitStartYN = "[[참조번호]]" Then
+            
+                tmpEndRowCount = 0
+                userTableRow = 0
+                rCount = 1
+                
+                resultCount = resultCount + 2
+             
+                Sheets(resultSheet).Select
+                Range("A" + CStr(resultCount)).Select
+                
+                Sheets(resultSheet).Range("A" + CStr(resultCount)).Value = H_InitYN
+                Sheets(resultSheet).Range("C" + CStr(resultCount)).Value = "### " & H_InitYN & " START ###"
+                
+                '색상지정
+                Rows(resultCount).Select
+                With Selection.Interior
+                    .ColorIndex = 6
+                    .Pattern = xlSolid
+                End With
+                
+            Else
+          
+                H_RemResRemarkcodeValue = Sheets(Worksheet).Range("C" + CStr(uCount)).Value
+                H_RemResRemarksValue = Sheets(Worksheet).Range("D" + CStr(uCount)).Value
+
+            
+                ' REMARKCODE START TAG 값 설정
+                H_RemTmpValue = H_RemRemarkcodeStartValue
+                H_RemTmpValue = H_RemTmpValue & H_RemResRemarkcodeValue
+                H_RemTmpValue = H_RemTmpValue & H_RemRemarkcodeEndValue
+                    
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_RemTmpValue)
+             
+                ' REMARKS START TAG 값 설정
+                H_RemTmpValue = H_RemRemarksStartValue
+                H_RemTmpValue = H_RemTmpValue & H_RemResRemarksValue
+                H_RemTmpValue = H_RemTmpValue & H_RemRemarksEndValue
+                    
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_RemTmpValue)
+                    
+            End If
+        ' ****************************************************************
+        ' 정비할당표 비고 로딩 종료
+        ' ****************************************************************
+        
+        ' ****************************************************************
+        ' 정비할당표(해상) 로딩 시작
+        ' ****************************************************************
+        ElseIf H_InitYN = "[[정비할당표(해상)]]" Then
+
+            Sheets(resultSheet).Select
+            Range("A" & CStr(resultCount)).Select
+            H_InitStartYN = Sheets(Worksheet).Range("C" + CStr(uCount)).Value
+            
+            H_ParaTagStartValue = "<para>"
+            
+            If H_InitStartYN = "[[구분]]" Then
+            
+                tmpEndRowCount = 0
+            
+                resultCount = resultCount + 2
+             
+                Sheets(resultSheet).Select
+                Range("A" + CStr(resultCount)).Select
+                
+                Sheets(resultSheet).Range("A" + CStr(resultCount)).Value = H_InitYN
+                Sheets(resultSheet).Range("C" + CStr(resultCount)).Value = "### " & H_InitYN & " START ###"
+                
+                '색상지정
+                Rows(resultCount).Select
+                With Selection.Interior
+                    .ColorIndex = 6
+                    .Pattern = xlSolid
+                End With
+
+           Else
+            
+                If H_InitStartYN = "[[그룹]]" Then
+                    tmpEndRowCount = 0
+
+                    H_MacGroupnoValue = Sheets(Worksheet).Range("D" + CStr(uCount)).Value
+                    H_MacNameValue = Sheets(Worksheet).Range("E" + CStr(uCount)).Value
+                    
+               
+                    ' GROUPNO TAG 값 설정
+'                    resultCount = resultCount + 1
+'                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+'                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacGroupnoStartValue)
+    
+                    H_MacTmpValue = H_MacGroupnoStartValue
+                    H_MacTmpValue = H_MacTmpValue & H_MacGroupnoValue
+                    H_MacTmpValue = H_MacTmpValue & H_MacGroupnoEndValue
+                    
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacTmpValue)
+                    
+'                    resultCount = resultCount + 1
+'                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+'                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacGroupnoEndValue)
+    
+    
+                    ' NAME TAG 값 설정
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacCompassemStartValue)
+                    
+'                    resultCount = resultCount + 1
+'                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+'                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacNameStartValue)
+    
+                    H_MacTmpValue = H_MacNameStartValue
+                    H_MacTmpValue = H_MacTmpValue & H_MacNameValue
+                    H_MacTmpValue = H_MacTmpValue & H_MacNameEndValue
+                    
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacTmpValue)
+                    
+'                    resultCount = resultCount + 1
+'                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+'                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacNameEndValue)
+                    
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacTypedesStartValue & H_MacTypedesEndValue)
+                    
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacCompassemEndValue)
+    
+                    ' QUALIFY START TAG 값 설정
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacQualifyStartValue)
+                    
+                End If
+            
+                H_MacMaintfuncValue = Sheets(Worksheet).Range("F" + CStr(uCount)).Value
+                H_MacOrgValue = Sheets(Worksheet).Range("G" + CStr(uCount)).Value
+                H_MacDirectValue = Sheets(Worksheet).Range("H" + CStr(uCount)).Value
+                H_MacDepotValue = Sheets(Worksheet).Range("I" + CStr(uCount)).Value
+                H_MacTerefsValue = Sheets(Worksheet).Range("J" + CStr(uCount)).Value
+                H_MacRemarkrefsValue = Sheets(Worksheet).Range("K" + CStr(uCount)).Value
+                
+                ' MAINTFUNC START TAG 값 설정
+                resultCount = resultCount + 1
+                H_MacMaintfuncStartValue = "<maintfunc label=""" & H_MacMaintfuncValue & """>"
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacMaintfuncStartValue & H_MacMaintfuncEndValue)
+                
+'                H_MacTmpValue = H_MacMaintfuncStartValue
+'                H_MacTmpValue = H_MacTmpValue & H_MacMaintfuncValue
+'                H_MacTmpValue = H_MacTmpValue & H_MacParaEndValue
+                
+'                resultCount = resultCount + 1
+'                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+'                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacTmpValue)
+                
+'                resultCount = resultCount + 1
+'                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+'                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacMaintfuncEndValue)
+                
+                
+                ' MAINTCLASS START TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacMaintclassStartValue)
+
+
+                ' 지상과 해상 태크 정보 틀림
+                H_MacUnitStartValue = "<uint>"
+                H_MacUnitEndValue = "</uint>"
+
+                ' UNIT START TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacUnitStartValue)
+
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacOrStartValue & H_MacOrgValue & H_MacOrEndValue)
+
+'                H_MacTmpValue = H_MacParaStartValue
+'                H_MacTmpValue = H_MacTmpValue & H_MacOrgValue
+'                H_MacTmpValue = H_MacTmpValue & H_MacParaEndValue
+                
+'                resultCount = resultCount + 1
+'                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+'                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacTmpValue)
+                
+'                resultCount = resultCount + 1
+'                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+'                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacOrEndValue)
+                
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacUnitEndValue)
+                
+                
+                ' DIRECT START TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacDirectStartValue & H_MacDirectValue & H_MacDirectEndValue)
+
+'                H_MacTmpValue = H_MacParaStartValue
+'                H_MacTmpValue = H_MacTmpValue & H_MacDirectValue
+'                H_MacTmpValue = H_MacTmpValue & H_MacParaEndValue
+                
+'                resultCount = resultCount + 1
+'                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+'                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacTmpValue)
+                
+'                resultCount = resultCount + 1
+'                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+'                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacDirectEndValue)
+
+
+                ' DEPOT START TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacDepotStartValue & H_MacDepotValue & H_MacDepotEndValue)
+
+'                H_MacTmpValue = H_MacParaStartValue
+'                H_MacTmpValue = H_MacTmpValue & H_MacDepotValue
+'                H_MacTmpValue = H_MacTmpValue & H_MacParaEndValue
+                
+'                resultCount = resultCount + 1
+'                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+'                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacTmpValue)
+                
+'                resultCount = resultCount + 1
+'                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+'                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacDepotEndValue)
+
+
+                ' MAINTCLASS START TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacMaintclassEndValue)
+
+                ' TEREFS START TAG 값 설정
+                resultCount = resultCount + 1
+                H_MacTerefsStartValue = "<terefs refs=""" & H_MacTerefsValue & """>"
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacTerefsStartValue & H_MacTerefsEndValue)
+
+
+'                H_MacTmpValue = H_MacParaStartValue
+'                H_MacTmpValue = H_MacTmpValue & H_MacTerefsValue
+'                H_MacTmpValue = H_MacTmpValue & H_MacParaEndValue
+                
+'                resultCount = resultCount + 1
+'                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+'                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacTmpValue)
+                
+'                resultCount = resultCount + 1
+'                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+'                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacTerefsEndValue)
+                
+                ' REMARKREFS START TAG 값 설정
+                resultCount = resultCount + 1
+                H_MacRemarkrefsStartValue = "<remarkrefs refs=""" & H_MacRemarkrefsValue & """>"
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacRemarkrefsStartValue & H_MacRemarkrefsEndValue)
+
+
+'                H_MacTmpValue = H_MacParaStartValue
+'                H_MacTmpValue = H_MacTmpValue & H_MacRemarkrefsValue
+'                H_MacTmpValue = H_MacTmpValue & H_MacParaEndValue
+                
+'                resultCount = resultCount + 1
+'                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+'                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacTmpValue)
+                
+'                resultCount = resultCount + 1
+'                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+'                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacRemarkrefsEndValue)
+
+                tmpEndRowCount = tmpEndRowCount + 1
+
+            End If
+            
+            If tmpEndRowCount > 0 Then
+                If (Sheets(Worksheet).Range("A" + CStr(uCount + 1)).Value = H_InitYN) Then
+                    If (Sheets(Worksheet).Range("C" + CStr(uCount + 1)).Value = "[[구분]]") Or (Sheets(Worksheet).Range("C" + CStr(uCount + 1)).Value = "[[그룹]]") Then
+                    
+                        ' QUALIFY END TAG 값 설정
+                        resultCount = resultCount + 1
+                        Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                        Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacQualifyEndValue)
+            
+                    End If
+                Else
+                    ' QUALIFY END TAG 값 설정
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacQualifyEndValue)
+                End If
+           End If
+        
+        ' ****************************************************************
+        ' 정비할당표(해상) 로딩 종료
+        ' ****************************************************************
+        
+       
+        ' ****************************************************************
+        ' 정비할당표(지상) 로딩 시작
+        ' ****************************************************************
+        ElseIf H_InitYN = "[[정비할당표(지상)]]" Then
+
+            Sheets(resultSheet).Select
+            Range("A" & CStr(resultCount)).Select
+            H_InitStartYN = Sheets(Worksheet).Range("C" + CStr(uCount)).Value
+            
+            H_ParaTagStartValue = "<para>"
+            
+            If H_InitStartYN = "[[구분]]" Then
+            
+                tmpEndRowCount = 0
+            
+                resultCount = resultCount + 2
+             
+                Sheets(resultSheet).Select
+                Range("A" + CStr(resultCount)).Select
+                
+                Sheets(resultSheet).Range("A" + CStr(resultCount)).Value = H_InitYN
+                Sheets(resultSheet).Range("C" + CStr(resultCount)).Value = "### " & H_InitYN & " START ###"
+                
+                '색상지정
+                Rows(resultCount).Select
+                With Selection.Interior
+                    .ColorIndex = 6
+                    .Pattern = xlSolid
+                End With
+
+           Else
+            
+                If H_InitStartYN = "[[그룹]]" Then
+                    tmpEndRowCount = 0
+
+                    H_MacGroupnoValue = Sheets(Worksheet).Range("D" + CStr(uCount)).Value
+                    H_MacNameValue = Sheets(Worksheet).Range("E" + CStr(uCount)).Value
+                    
+               
+                    ' GROUPNO TAG 값 설정
+'                    resultCount = resultCount + 1
+'                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+'                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacGroupnoStartValue)
+    
+                    H_MacTmpValue = H_MacGroupnoStartValue
+                    H_MacTmpValue = H_MacTmpValue & H_MacGroupnoValue
+                    H_MacTmpValue = H_MacTmpValue & H_MacGroupnoEndValue
+                    
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacTmpValue)
+                    
+'                    resultCount = resultCount + 1
+'                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+'                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacGroupnoEndValue)
+    
+    
+                    ' NAME TAG 값 설정
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacCompassemStartValue)
+                    
+'                    resultCount = resultCount + 1
+'                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+'                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacNameStartValue)
+    
+                    H_MacTmpValue = H_MacNameStartValue
+                    H_MacTmpValue = H_MacTmpValue & H_MacNameValue
+                    H_MacTmpValue = H_MacTmpValue & H_MacNameEndValue
+                    
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacTmpValue)
+                    
+'                    resultCount = resultCount + 1
+'                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+'                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacNameEndValue)
+                    
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacTypedesStartValue & H_MacTypedesEndValue)
+                    
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacCompassemEndValue)
+    
+                    ' QUALIFY START TAG 값 설정
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacQualifyStartValue)
+                    
+                End If
+            
+                ' 5계단 정비 내용 반영
+                H_MacMaintfuncValue = Sheets(Worksheet).Range("F" + CStr(uCount)).Value
+                H_MacCrewValue = Sheets(Worksheet).Range("G" + CStr(uCount)).Value
+                H_MacOrgValue = Sheets(Worksheet).Range("H" + CStr(uCount)).Value
+                H_MacDirectValue = Sheets(Worksheet).Range("I" + CStr(uCount)).Value
+                H_MacGensupValue = Sheets(Worksheet).Range("J" + CStr(uCount)).Value
+                H_MacDepotValue = Sheets(Worksheet).Range("K" + CStr(uCount)).Value
+                H_MacTerefsValue = Sheets(Worksheet).Range("L" + CStr(uCount)).Value
+                H_MacRemarkrefsValue = Sheets(Worksheet).Range("M" + CStr(uCount)).Value
+                
+                ' MAINTFUNC START TAG 값 설정
+                resultCount = resultCount + 1
+                H_MacMaintfuncStartValue = "<maintfunc label=""" & H_MacMaintfuncValue & """>"
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacMaintfuncStartValue & H_MacMaintfuncValue & H_MacMaintfuncEndValue)
+                
+'                H_MacTmpValue = H_MacMaintfuncStartValue
+'                H_MacTmpValue = H_MacTmpValue & H_MacMaintfuncValue
+'                H_MacTmpValue = H_MacTmpValue & H_MacParaEndValue
+                
+'                resultCount = resultCount + 1
+'                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+'                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacTmpValue)
+                
+'                resultCount = resultCount + 1
+'                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+'                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacMaintfuncEndValue)
+                
+                
+                ' MAINTCLASS START TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacMaintclassStartValue)
+
+
+                ' 지상과 해상 태크 정보 틀림
+                H_MacUnitStartValue = "<unit>"
+                H_MacUnitEndValue = "</unit>"
+
+                ' UNIT START TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacUnitStartValue)
+
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacCrewStartValue & H_MacCrewValue & H_MacCrewEndValue)
+
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacOrStartValue & H_MacOrgValue & H_MacOrEndValue)
+
+'                H_MacTmpValue = H_MacParaStartValue
+'                H_MacTmpValue = H_MacTmpValue & H_MacOrgValue
+'                H_MacTmpValue = H_MacTmpValue & H_MacParaEndValue
+                
+'                resultCount = resultCount + 1
+'                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+'                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacTmpValue)
+                
+'                resultCount = resultCount + 1
+'                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+'                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacOrEndValue)
+                
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacUnitEndValue)
+                
+                
+                ' DIRECT START TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacDirectStartValue & H_MacDirectValue & H_MacDirectEndValue)
+
+                ' GENSUP START TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacGensupStartValue & H_MacGensupValue & H_MacGensupEndValue)
+
+'                H_MacTmpValue = H_MacParaStartValue
+'                H_MacTmpValue = H_MacTmpValue & H_MacDirectValue
+'                H_MacTmpValue = H_MacTmpValue & H_MacParaEndValue
+                
+'                resultCount = resultCount + 1
+'                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+'                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacTmpValue)
+                
+'                resultCount = resultCount + 1
+'                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+'                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacDirectEndValue)
+
+
+                ' DEPOT START TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacDepotStartValue & H_MacDepotValue & H_MacDepotEndValue)
+
+'                H_MacTmpValue = H_MacParaStartValue
+'                H_MacTmpValue = H_MacTmpValue & H_MacDepotValue
+'                H_MacTmpValue = H_MacTmpValue & H_MacParaEndValue
+                
+'                resultCount = resultCount + 1
+'                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+'                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacTmpValue)
+                
+'                resultCount = resultCount + 1
+'                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+'                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacDepotEndValue)
+
+
+                ' MAINTCLASS START TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacMaintclassEndValue)
+
+                ' TEREFS START TAG 값 설정
+                resultCount = resultCount + 1
+                H_MacTerefsStartValue = "<terefs refs=""" & H_MacTerefsValue & """>"
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacTerefsStartValue & H_MacTerefsValue & H_MacTerefsEndValue)
+
+
+'                H_MacTmpValue = H_MacParaStartValue
+'                H_MacTmpValue = H_MacTmpValue & H_MacTerefsValue
+'                H_MacTmpValue = H_MacTmpValue & H_MacParaEndValue
+                
+'                resultCount = resultCount + 1
+'                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+'                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacTmpValue)
+                
+'                resultCount = resultCount + 1
+'                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+'                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacTerefsEndValue)
+                
+                ' REMARKREFS START TAG 값 설정
+                resultCount = resultCount + 1
+                H_MacRemarkrefsStartValue = "<remarkrefs refs=""" & H_MacRemarkrefsValue & """>"
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacRemarkrefsStartValue & H_MacRemarkrefsValue & H_MacRemarkrefsEndValue)
+
+
+'                H_MacTmpValue = H_MacParaStartValue
+'                H_MacTmpValue = H_MacTmpValue & H_MacRemarkrefsValue
+'                H_MacTmpValue = H_MacTmpValue & H_MacParaEndValue
+                
+'                resultCount = resultCount + 1
+'                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+'                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacTmpValue)
+                
+'                resultCount = resultCount + 1
+'                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+'                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacRemarkrefsEndValue)
+
+                tmpEndRowCount = tmpEndRowCount + 1
+
+            End If
+            
+            If tmpEndRowCount > 0 Then
+                If (Sheets(Worksheet).Range("A" + CStr(uCount + 1)).Value = H_InitYN) Then
+                    If (Sheets(Worksheet).Range("C" + CStr(uCount + 1)).Value = "[[구분]]") Or (Sheets(Worksheet).Range("C" + CStr(uCount + 1)).Value = "[[그룹]]") Then
+                    
+                        ' QUALIFY END TAG 값 설정
+                        resultCount = resultCount + 1
+                        Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                        Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacQualifyEndValue)
+            
+                    End If
+                Else
+                    ' QUALIFY END TAG 값 설정
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_MacQualifyEndValue)
+                End If
+           End If
+        
+        ' ****************************************************************
+        ' 정비할당표(지상) 로딩 종료
+        ' ****************************************************************
+
+        ' ****************************************************************
+        ' 고장배제표 색인 로딩 시작
+        ' ****************************************************************
+        ElseIf H_InitYN = "[[고장색인]]" Then
+
+            Sheets(resultSheet).Select
+            Range("A" & CStr(resultCount)).Select
+            H_InitStartYN = Sheets(Worksheet).Range("C" + CStr(uCount)).Value
+            
+            If H_InitStartYN = "[[장치명]]" Then
+            
+                tmpEndRowCount = 0
+            
+                resultCount = resultCount + 2
+             
+                Sheets(resultSheet).Select
+                Range("A" + CStr(resultCount)).Select
+                
+                Sheets(resultSheet).Range("A" + CStr(resultCount)).Value = H_InitYN
+                Sheets(resultSheet).Range("C" + CStr(resultCount)).Value = "### " & H_InitYN & " START ###"
+                
+                '색상지정
+                Rows(resultCount).Select
+                With Selection.Interior
+                    .ColorIndex = 6
+                    .Pattern = xlSolid
+                End With
+
+           Else
+                H_TS_TitleValue = Sheets(Worksheet).Range("C" + CStr(uCount)).Value
+                H_TS_MalFuncValue = Sheets(Worksheet).Range("D" + CStr(uCount)).Value
+                H_TS_TocxrefValue = Sheets(Worksheet).Range("E" + CStr(uCount)).Value
+            
+                If Len(H_TS_TitleValue) > 0 Then
+                    tmpEndRowCount = 0
+
+                    ' ts-category TAG 값 설정
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_TS_tscategoryStartValue)
+
+                    ' title TAG 값 설정
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_TS_titleStartValue)
+                
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_TS_paraStartValue & H_TS_TitleValue & H_TS_paraEndValue)
+                
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_TS_titleEndValue)
+                
+                End If
+                
+                ' tsindx-entry TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_TS_tsindxentryStartValue)
+                
+                ' malfunc TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_TS_malfuncStartValue)
+                
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_TS_paraStartValue & H_TS_MalFuncValue & H_TS_paraEndValue)
+                
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_TS_malfuncEndValue)
+               
+                
+                ' tocxref TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_TS_tocxrefStartValue)
+                
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_TS_paraStartValue & H_TS_TocxrefValue & H_TS_paraEndValue)
+                
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_TS_tocxrefEndValue)
+                
+                
+                ' tsindx-entry TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_TS_tsindxentryEndValue)
+                
+                tmpEndRowCount = tmpEndRowCount + 1
+
+            End If
+            
+            If tmpEndRowCount > 0 Then
+                If (Sheets(Worksheet).Range("A" + CStr(uCount + 1)).Value = H_InitYN) Then
+                    If (Sheets(Worksheet).Range("C" + CStr(uCount + 1)).Value = "[[장치명]]") Or Len(Sheets(Worksheet).Range("C" + CStr(uCount + 1)).Value) > 0 Then
+                    
+                        ' tsindx-entry END TAG 값 설정
+                        resultCount = resultCount + 1
+                        Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                        Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_TS_tscategoryEndValue)
+            
+                    End If
+                Else
+                        ' tsindx-entry END TAG 값 설정
+                        resultCount = resultCount + 1
+                        Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                        Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_TS_tscategoryEndValue)
+                End If
+           End If
+        
+        ' ****************************************************************
+        ' 고장징후 색인 로딩 종료
+        ' ****************************************************************
+
+        ' ****************************************************************
+        ' 고장배제표 도표 로딩 시작
+        ' ****************************************************************
+        ElseIf H_InitYN = "[[고장도표]]" Then
+
+            Sheets(resultSheet).Select
+            Range("A" & CStr(resultCount)).Select
+            H_InitStartYN = Sheets(Worksheet).Range("C" + CStr(uCount)).Value
+            H_FT_MalfuncValue = Sheets(Worksheet).Range("D" + CStr(uCount)).Value
+            
+            If H_InitStartYN = "[[고장징후]]" Then
+            
+                tmpEndRowCount = 0
+                H_FT_CountValue = 0
+                
+                Sheets(resultSheet).Select
+                Range("A" + CStr(resultCount)).Select
+                
+                ' ts-category TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_FT_symptomStartValue & H_FT_MalfuncValue & H_FT_symptomEndValue)
+
+           Else
+                H_FT_MalfuncValue = Sheets(Worksheet).Range("D" + CStr(uCount)).Value
+                H_FT_ActionFuncValue = Sheets(Worksheet).Range("E" + CStr(uCount)).Value
+           
+                If Len(H_FT_MalfuncValue) > 0 Then
+                    
+                    H_FT_CountValue = 0
+                    
+                    ' <malfunc> TAG 값 설정
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_FT_malfuncStartValue)
+                
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_FT_paraStartValue & H_FT_MalfuncValue & H_FT_paraEndValue)
+                
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_FT_malfuncEndValue)
+                    
+                     ' <action> TAG 값 설정
+                    resultCount = resultCount + 1
+                    Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                    Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_FT_actionStartValue)
+                
+                End If
+                
+                ' para TAG 값 설정
+                resultCount = resultCount + 1
+                Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_FT_paraStartValue & H_FT_ActionFuncValue & H_FT_paraEndValue)
+                
+                tmpEndRowCount = tmpEndRowCount + 1
+                H_FT_CountValue = H_FT_CountValue + 1
+
+            End If
+            
+            If tmpEndRowCount > 0 Then
+                If (Sheets(Worksheet).Range("A" + CStr(uCount + 1)).Value = H_InitYN) Then
+                
+                    If (Len(Sheets(Worksheet).Range("D" + CStr(uCount + 1)).Value) > 0) And (H_FT_CountValue > 0) Then
+                    
+                        ' action END TAG 값 설정
+                        resultCount = resultCount + 1
+                        Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                        Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_FT_actionEndValue)
+            
+                    End If
+                Else
+                        ' action END TAG 값 설정
+                        resultCount = resultCount + 1
+                        Call Kais_GenCol_Insert(resultSheet, "A" + CStr(resultCount), H_InitYN)
+                        Call Kais_GenCol_Insert(resultSheet, "C" + CStr(resultCount), H_FT_actionEndValue)
+                End If
+           End If
+        
+        ' ****************************************************************
+        ' 고장징후 색인 로딩 종료
+        ' ****************************************************************
+
+        End If
+
+    Next uCount
+
+    KAIS_TotalTrans_Change = "TRUE"
+    
+End Function
+
+
+

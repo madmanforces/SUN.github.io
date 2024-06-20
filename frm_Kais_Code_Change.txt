@@ -1,0 +1,151 @@
+Private Sub cmd_change_Click()
+  Dim Result As String
+  
+  Dim TBR_PUM, TBR_JUNG, TBR_Han, TBR_Desc As String
+
+  TBR_PUM = TBV_PUM.Value
+  TBR_JUNG = TBV_JUNG.Value
+  TBR_Han = TBV_Han.Value
+  TBR_Desc = TBV_Desc.Value
+
+  Result = Kais_Code_Change(TBR_PUM, TBR_JUNG, TBR_Han, TBR_Desc)
+  
+  If Result = "TRUE" Then
+        MsgBox "KAIS 변환 Sheet 생성이 완료 되었습니다."
+  Else
+        MsgBox "KAIS 변환 Sheet 생성을 실패 하였습니다."
+  End If
+End Sub
+
+Private Sub cmd_chageVeryfy_Click()
+  Dim Result2 As String
+  
+  Result2 = Kais_num_Change()
+  
+  If Result2 = "TRUE" Then
+        MsgBox "KAIS 변환 Sheet 생성이 완료 되었습니다."
+  Else
+        MsgBox "KAIS 변환 Sheet 생성을 실패 하였습니다."
+  End If
+
+End Sub
+
+Private Sub cmd_changePic_Click()
+
+  Dim Result3 As String
+  
+  Result3 = Kais_pic_Change()
+  
+  If Result3 = "TRUE" Then
+        MsgBox "KAIS 변환 Sheet 생성이 완료 되었습니다."
+  Else
+        MsgBox "KAIS 변환 Sheet 생성을 실패 하였습니다."
+  End If
+
+End Sub
+
+Private Sub cmd_genArmyCircleTran_change_Click()
+
+  Dim Result As String
+  
+  Result = Kais_ArmyCirCle_Change()
+  
+  If Result = "TRUE" Then
+        MsgBox "원문자 변환이 완료 되었습니다."
+  Else
+        MsgBox "원문자 변환이 실패 하였습니다."
+  End If
+
+End Sub
+
+Private Sub cmd_genchar_change_Click()
+  Dim Result As String
+  
+  Dim TBR_STARTNUM, TBR_LB0, TBR_LB1, TBR_LB2, TBR_LB3, TBR_LB4, TBR_LB5, TBR_LB6 As String
+  Dim TBR_LB0_, TBR_LB1_, TBR_LB2_, TBR_LB3_, TBR_LB4_, TBR_LB5_, TBR_LB6_ As String
+
+  TBR_STARTNUM = TBV_STARTNUM.Value
+  TBR_LB0 = TBV_LB0.Value
+  TBR_LB1 = TBV_LB1.Value
+  TBR_LB2 = TBV_LB2.Value
+  TBR_LB3 = TBV_LB3.Value
+  TBR_LB4 = TBV_LB4.Value
+  TBR_LB5 = TBV_LB5.Value
+  TBR_LB6 = TBV_LB6.Value
+  TBR_LB0_ = TBV_LB0_.Value
+  TBR_LB1_ = TBV_LB1_.Value
+  TBR_LB2_ = TBV_LB2_.Value
+  TBR_LB3_ = TBV_LB3_.Value
+  TBR_LB4_ = TBV_LB4_.Value
+  TBR_LB5_ = TBV_LB5_.Value
+  TBR_LB6_ = TBV_LB6_.Value
+
+'  Result = Kais_GenChar_Change(TBR_STARTNUM, TBR_LB0, TBR_LB1, TBR_LB2, TBR_LB3, TBR_LB4, TBR_LB5, TBR_LB6)
+  Result = KAIS_TotalTrans_Change(TBR_STARTNUM, TBR_LB0, TBR_LB1, TBR_LB2, TBR_LB3, TBR_LB4, TBR_LB5, TBR_LB6, TBR_LB0_, TBR_LB1_, TBR_LB2_, TBR_LB3_, TBR_LB4_, TBR_LB5_, TBR_LB6_)
+  
+  If Result = "TRUE" Then
+        MsgBox "KAIS 변환 Sheet 생성이 완료 되었습니다."
+  Else
+        MsgBox "KAIS 변환 Sheet 생성을 실패 하였습니다."
+  End If
+End Sub
+
+Private Sub cmd_genCharTran_change_Click()
+  Kais_GenCharTran_Change ("일반자료")
+  MsgBox "KAIS 변환 Sheet 생성이 완료 되었습니다."
+End Sub
+
+Private Sub cmd_genStepComp_change_Click()
+  Dim Result As String
+  
+  Result = Kais_StepComp_Change()
+  
+  If Result = "TRUE" Then
+        MsgBox "KAIS 변환 Sheet 생성이 완료 되었습니다."
+  Else
+        MsgBox "KAIS 변환 Sheet 생성을 실패 하였습니다."
+  End If
+End Sub
+
+
+
+Private Sub cmd_genMainusTran_change_Click()
+  Kais_GenMainusTran_Change ("일반자료")
+  MsgBox "KAIS 변환 Sheet 생성이 완료 되었습니다."
+End Sub
+
+Private Sub cmd_genNavyCircleTran_change_Click()
+  Dim Result As String
+  
+  Result = Kais_NavyCirCle_Change()
+  
+  If Result = "TRUE" Then
+        MsgBox "원문자 변환이 완료 되었습니다."
+  Else
+        MsgBox "원문자 변환이 실패 하였습니다."
+  End If
+End Sub
+
+Private Sub cmd_genStepNO_change_Click()
+  Dim Result As String
+  
+  Result = Kais_StepNO_Change()
+  
+  If Result = "TRUE" Then
+        MsgBox "KAIS 변환 Sheet 생성이 완료 되었습니다."
+  Else
+        MsgBox "KAIS 변환 Sheet 생성을 실패 하였습니다."
+  End If
+End Sub
+
+Private Sub cmd_genStepYES_change_Click()
+  Dim Result As String
+  
+  Result = Kais_StepYES_Change()
+  
+  If Result = "TRUE" Then
+        MsgBox "KAIS 변환 Sheet 생성이 완료 되었습니다."
+  Else
+        MsgBox "KAIS 변환 Sheet 생성을 실패 하였습니다."
+  End If
+End Sub
